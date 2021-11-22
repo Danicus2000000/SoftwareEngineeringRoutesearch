@@ -37,17 +37,5 @@ namespace graphsearch
                 Console.WriteLine("No arguments were given!");
             }
         }
-        private void bruteForce() 
-        {
-
-        }
-        private void dijkstras() 
-        {
-
-        }
-        private void aStar() 
-        {
-
-        }
     }
 }
