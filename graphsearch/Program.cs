@@ -6,6 +6,12 @@ namespace graphsearch
     {
         static void Main(string[] args)
         {
+            string startNode = null;
+            string endNode = null;
+            string fileToRead = null;
+            string fileToOutput = null;
+            bool outputToConsole = true;
+            bool debugInfo = false;
             if (args.Length != 0) 
             {
                 for(int i=0; i < args.Length; i++) 
@@ -14,6 +20,53 @@ namespace graphsearch
                     {
                         switch (args[i]) 
                         {
+                            case "-s":
+                            case "-e":
+                            case "-f":
+                            case "-o":
+                            case "-O":
+                                try 
+                                {
+                                    if(args[i+1][0]=='\"' && args[i+1][args[i+1].Length-1]=='\"') //checks if the argument given for a node or filename is valid
+                                    {
+                                        if (args[i] == "-s")
+                                        {
+                                            startNode = args[i + 1].Replace("\"","");
+                                            Console.WriteLine("Start Node Set!");
+                                        }
+                                        else if (args[i] == "-e") 
+                                        {
+                                            endNode = args[i + 1].Replace("\"", "");
+                                            Console.WriteLine("End Node Set!");
+                                        }
+                                        else if (args[i] == "-f") 
+                                        {
+                                            fileToRead = args[i + 1].Replace("\"", "");
+                                            Console.WriteLine("End Node Set!");
+                                        }
+                                        else if (args[i] == "-o" || args[i]=="-O")
+                                        {
+                                            fileToOutput = args[i + 1].Replace("\"", "");
+                                            Console.WriteLine("End Node Set!");
+                                        }
+                                        if (args[i] == "-o") 
+                                        {
+                                            outputToConsole = false;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        throw new InvalidOperationException();
+                                    }
+                                }
+                                catch (Exception) 
+                                {
+                                    Console.WriteLine("A valid starting node was not given or was formatted incorrectly!");
+                                }
+                                break;
+                            case "-d":
+                                debugInfo = true;
+                                break;
                             case "-h":
                                 Console.WriteLine("-s <number or string>: Specify starting node, either as an integer or a string.  If a string, it must be in quotes, such as \"A\" or \"Norwich\".");
                                 Console.WriteLine("-e <number or string>: Specify end node either as an integer or a string.  If a string, it must be in quotes, such as \"Z\" or \"Zetland\".");
