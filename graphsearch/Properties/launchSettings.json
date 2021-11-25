@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "graphsearch": {
+      "commandName": "Project",
+      "commandLineArgs": "-s"
+    }
+  }
+}

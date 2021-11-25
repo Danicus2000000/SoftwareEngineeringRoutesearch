@@ -4,6 +4,13 @@ namespace graphsearch
 {
     class Program
     {
+        enum sortingAlgorithm
+        {
+           Null,
+           Dijkstra,
+           AStar,
+           BF
+        }
         static void Main(string[] args)
         {
             string startNode = null;
@@ -12,6 +19,8 @@ namespace graphsearch
             string fileToOutput = null;
             bool outputToConsole = true;
             bool debugInfo = false;
+            bool failedBuild = false;
+            sortingAlgorithm chosenAlgorithm=sortingAlgorithm.Null;
             if (args.Length != 0) 
             {
                 for(int i=0; i < args.Length; i++) 
@@ -25,47 +34,54 @@ namespace graphsearch
                             case "-f":
                             case "-o":
                             case "-O":
-                                try 
+                                if (args[i] == "-s")//if -s flag set startnode
                                 {
-                                    if(args[i+1][0]=='\"' && args[i+1][args[i+1].Length-1]=='\"') //checks if the argument given for a node or filename is valid
-                                    {
-                                        if (args[i] == "-s")
-                                        {
-                                            startNode = args[i + 1].Replace("\"","");
-                                            Console.WriteLine("Start Node Set!");
-                                        }
-                                        else if (args[i] == "-e") 
-                                        {
-                                            endNode = args[i + 1].Replace("\"", "");
-                                            Console.WriteLine("End Node Set!");
-                                        }
-                                        else if (args[i] == "-f") 
-                                        {
-                                            fileToRead = args[i + 1].Replace("\"", "");
-                                            Console.WriteLine("End Node Set!");
-                                        }
-                                        else if (args[i] == "-o" || args[i]=="-O")
-                                        {
-                                            fileToOutput = args[i + 1].Replace("\"", "");
-                                            Console.WriteLine("End Node Set!");
-                                        }
-                                        if (args[i] == "-o") 
-                                        {
-                                            outputToConsole = false;
-                                        }
-                                    }
-                                    else 
-                                    {
-                                        throw new InvalidOperationException();
-                                    }
+                                    startNode = args[i + 1];
                                 }
-                                catch (Exception) 
+                                else if (args[i] == "-e") //if -e flag set endnode
                                 {
-                                    Console.WriteLine("A valid starting node was not given or was formatted incorrectly!");
+                                    endNode = args[i + 1];
+                                }
+                                else if (args[i] == "-f") //if -f flag set file to read from
+                                {
+                                    fileToRead = args[i + 1];
+                                }
+                                else if (args[i] == "-o" || args[i]=="-O")//if -o or -O flag set file output
+                                {
+                                    fileToOutput = args[i + 1];
+                                }
+                                if (args[i] == "-o")//if -o flag don't output to console
+                                { 
+                                    outputToConsole = false;
+                                }
+                                if (args[i] == "-O") //if -O flag output to console
+                                {
+                                    outputToConsole = true;
                                 }
                                 break;
                             case "-d":
-                                debugInfo = true;
+                                debugInfo = true;//if -d flag enable debug info
+                                break;
+                            case "-a"://if a flag find sorting algorithm or if inocorrect entered throw an exception
+                                    if(args[i+1].ToUpper()== "DIJKSTRA") 
+                                    {
+                                        chosenAlgorithm = sortingAlgorithm.Dijkstra;
+                                        Console.WriteLine("Dijkstra selected");
+                                    }
+                                    else if (args[i + 1].ToUpper() == "ASTAR") 
+                                    {
+                                        chosenAlgorithm = sortingAlgorithm.AStar;
+                                        Console.WriteLine("A* selected");
+                                    }
+                                    else if (args[i + 1].ToUpper() == "BF")
+                                    {
+                                        chosenAlgorithm = sortingAlgorithm.BF;
+                                        Console.WriteLine("Brute Force Detected");
+                                    }
+                                    else 
+                                    {
+                                        throw new InvalidOperationException("Could not find selected sorting algorithm!");
+                                    }
                                 break;
                             case "-h":
                                 Console.WriteLine("-s <number or string>: Specify starting node, either as an integer or a string.  If a string, it must be in quotes, such as \"A\" or \"Norwich\".");
@@ -79,9 +95,10 @@ namespace graphsearch
                                 break;
                         }
                     }
-                    catch (Exception) 
+                    catch (Exception ex) 
                     {
-                        Console.WriteLine("An invalid Argument was given!");
+                       Console.WriteLine(ex.Message);
+                       failedBuild = true;
                     }
                 }
             }
