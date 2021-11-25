@@ -101,11 +101,13 @@ namespace graphsearch
                        failedBuild = true;
                     }
                 }
+            
             }
             else 
             {
                 Console.WriteLine("No arguments were given!");
             }
+
         }
     }
 }
