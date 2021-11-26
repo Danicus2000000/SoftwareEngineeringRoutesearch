@@ -135,6 +135,7 @@ namespace graphsearch
                 }
                 else 
                 {
+                    Console.WriteLine("The requested file does not exist!");
                     return false;
                 }
             }
@@ -160,6 +161,10 @@ namespace graphsearch
                 foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
+                    for(int i=0; i<lineInfo.Length;i++) //removes any whitespace that could be in the file acccidentally
+                    {
+                        lineInfo[i].Replace(" ","");
+                    }
                     if (lineInfo[0].ToLower() == "nodes")//if the word nodes is seen change the next lines to parse into nodes
                     {
                         fileMode = FileParseMode.Nodes;
