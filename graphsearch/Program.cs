@@ -30,23 +30,17 @@ namespace graphsearch
                         switch (args[i]) 
                         {
                             case "-s":
+                                startNode = args[i + 1];
+                                break;
                             case "-e":
+                                endNode = args[i + 1];
+                                break;
                             case "-f":
+                                fileToRead = args[i + 1];
+                                break;
                             case "-o":
                             case "-O":
-                                if (args[i] == "-s")//if -s flag set startnode
-                                {
-                                    startNode = args[i + 1];
-                                }
-                                else if (args[i] == "-e") //if -e flag set endnode
-                                {
-                                    endNode = args[i + 1];
-                                }
-                                else if (args[i] == "-f") //if -f flag set file to read from
-                                {
-                                    fileToRead = args[i + 1];
-                                }
-                                else if (args[i] == "-o" || args[i]=="-O")//if -o or -O flag set file output
+                                if (args[i] == "-o" || args[i]=="-O")//if -o or -O flag set file output
                                 {
                                     fileToOutput = args[i + 1];
                                 }
@@ -66,17 +60,14 @@ namespace graphsearch
                                     if(args[i+1].ToUpper()== "DIJKSTRA") 
                                     {
                                         chosenAlgorithm = sortingAlgorithm.Dijkstra;
-                                        Console.WriteLine("Dijkstra selected");
                                     }
                                     else if (args[i + 1].ToUpper() == "ASTAR") 
                                     {
                                         chosenAlgorithm = sortingAlgorithm.AStar;
-                                        Console.WriteLine("A* selected");
                                     }
                                     else if (args[i + 1].ToUpper() == "BF")
                                     {
                                         chosenAlgorithm = sortingAlgorithm.BF;
-                                        Console.WriteLine("Brute Force Detected");
                                     }
                                     else 
                                     {
