@@ -149,6 +149,7 @@ namespace graphsearch
         /// Reads the node file and stores them as required
         /// </summary>
         /// <param name="fileToRead">The file to read</param>
+        /// <param name="nodes">The list of nodes recieved from the file</param>
         /// <returns>A bool representing whether the file is formatted correctly</returns>
         public bool ParseFile(string fileToRead, out List<Node> nodes) 
         {
@@ -203,6 +204,45 @@ namespace graphsearch
             {
                 Console.WriteLine("The data in the file given was not formatted correctly!");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Assigns the start and end node bools in the list
+        /// </summary>
+        /// <param name="startNode">The start node</param>
+        /// <param name="endNode">The end node</param>
+        /// <param name="nodes">The list of all nodes</param>
+        /// <returns>A bool representing whether the start and end node strings occur in the file</returns>
+        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes)
+        {
+            bool foundStart = false;//used to ensure we do not have to loop through all nodes every time to save time
+            bool foundEnd = false;
+            foreach(Node node in nodes) //sets start and end node upon finding them
+            {
+                if (startNode == node.name) 
+                {
+                    node.isStartNode = true;
+                    foundStart = true;
+                }
+                else if(endNode == node.name) 
+                {
+                    node.isEndNode = true;
+                    foundEnd = true;
+                }
+                if(foundStart && foundEnd) 
+                {
+                    break;
+                }
+            }
+            if(!foundStart || !foundEnd) //ensures that the start node and end node given are in the file by returning false if they are not found
+            {
+                Console.WriteLine("The start node and end nodes given do not match any given in the file!");
+                return false;
+            }
+            else 
+            {
+                return true;
             }
         }
     }

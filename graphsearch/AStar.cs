@@ -6,5 +6,9 @@ namespace graphsearch
 {
     class AStar
     {
+        public string Run(List<Node> nodes)
+        {
+            return "";
+        }
     }
 }

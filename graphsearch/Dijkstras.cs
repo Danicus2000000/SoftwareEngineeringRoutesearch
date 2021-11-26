@@ -6,5 +6,9 @@ namespace graphsearch
 {
     class Dijkstras
     {
+        public string Run(List<Node> nodes)
+        {
+            return "";
+        }
     }
 }

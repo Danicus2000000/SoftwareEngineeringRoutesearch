@@ -6,5 +6,9 @@ namespace graphsearch
 {
     class BruteForce
     {
+        public string Run(List<Node> nodes) 
+        {
+            return "";
+        }
     }
 }

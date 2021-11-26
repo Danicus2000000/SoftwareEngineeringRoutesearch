@@ -12,6 +12,9 @@ namespace graphsearch
         public Dictionary<int, int> paths;//contains all paths takeable from this node first int represents nodeIndex second represents cost to traverse it
         public int xCoord { get; private set; }//the x coordinate of this node
         public int yCoord { get; private set; }//the y coordinate of this node
+        public bool isStartNode;
+        public bool isEndNode;
+
         /// <summary>
         /// Intialiser for a Node
         /// </summary>
@@ -27,6 +30,8 @@ namespace graphsearch
             paths = new Dictionary<int, int>();
             xCoord = pXCoord;
             yCoord = pYCoord;
+            isEndNode = false;
+            isStartNode = false;
         }
     }
 }
