@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 namespace graphsearch
 {
-    internal class GetInformation
+    public class GetInformation
     {
         public enum sortingAlgorithm//enum for sorting algorithm type
         {
@@ -12,6 +12,12 @@ namespace graphsearch
             Dijkstra,
             AStar,
             BF
+        }
+        public enum FileParseMode 
+        {
+            Null,
+            Nodes,
+            Edges
         }
         /// <summary>
         /// Gets the information from the console arguments
@@ -135,6 +141,67 @@ namespace graphsearch
             else //else warn that the information given is incorrect or formatted incorrectly
             {
                 Console.WriteLine("One or more required arguments where missing or invalid!");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Reads the node file and stores them as required
+        /// </summary>
+        /// <param name="fileToRead">The file to read</param>
+        /// <returns>A bool representing whether the file is formatted correctly</returns>
+        public bool ParseFile(string fileToRead, out List<Node> nodes) 
+        {
+            FileParseMode fileMode = FileParseMode.Null;
+            nodes = new List<Node>();//contains all the nodes in the diagram
+            try
+            {
+                foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
+                {
+                    string[] lineInfo = line.Split(",");//split it by commas as required
+                    if (lineInfo[0].ToLower() == "nodes")//if the word nodes is seen change the next lines to parse into nodes
+                    {
+                        fileMode = FileParseMode.Nodes;
+                    }
+                    else if (lineInfo[0].ToLower() == "edges")//if the word edges is seen change the next lines to parse into edges
+                    {
+                        fileMode = FileParseMode.Edges;
+                    }
+                    else//if the line is information
+                    {
+                        if (fileMode == FileParseMode.Nodes) //if we are currently parsing for nodes
+                        {
+                            nodes.Add(new Node(lineInfo[1].Replace("\"",""),Convert.ToInt32(lineInfo[0]),Convert.ToInt32(line[2]),Convert.ToInt32(lineInfo[3])));//Adds a new node with the details given in the file    
+                        }
+                        else if (fileMode == FileParseMode.Edges) //if we are currently parsing for edges
+                        {
+                            bool foundNode1 = false;//stores if each node has been found
+                            bool foundNode2 = false;
+                            foreach (Node node in nodes)//loop through all nodes and add the mentioned edge the first number is the node that you can traverse to the second is the cost to traverse this path
+                            {
+                                if (node.nodeIndex == Convert.ToInt32(lineInfo[0]))
+                                {
+                                    node.paths.Add(Convert.ToInt32(lineInfo[1]), Convert.ToInt32(lineInfo[2]));
+                                    foundNode1 = true;
+                                }
+                                else if (node.nodeIndex == Convert.ToInt32(lineInfo[1]))
+                                {
+                                    node.paths.Add(Convert.ToInt32(lineInfo[0]), Convert.ToInt32(lineInfo[2]));
+                                    foundNode2 = true;
+                                }
+                                if (foundNode1 && foundNode2)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception) //tells prorgam the operation failed
+            {
+                Console.WriteLine("The data in the file given was not formatted correctly!");
                 return false;
             }
         }

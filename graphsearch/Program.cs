@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 namespace graphsearch
 {
@@ -22,7 +23,10 @@ namespace graphsearch
             infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
             if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm)) //checks whether the program can begin
             {
+                if(infoGet.ParseFile(fileToRead, out List<Node> nodes))//parses all file data and continues to run if it is parsed correctly
+                {
 
+                }
             }
         }
     }
