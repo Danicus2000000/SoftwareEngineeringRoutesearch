@@ -20,7 +20,7 @@ namespace graphsearch
 
             GetInformation infoGet = new GetInformation();
             infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
-            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead)) //checks whether the program can begin
+            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm)) //checks whether the program can begin
             {
 
             }

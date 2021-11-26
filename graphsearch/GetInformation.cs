@@ -84,10 +84,6 @@ namespace graphsearch
                                 {
                                     chosenAlgorithm = sortingAlgorithm.BF;
                                 }
-                                else
-                                {
-                                    throw new InvalidOperationException("Could not find selected sorting algorithm!");
-                                }
                                 break;
                             case "-h":
                                 if (!helpAlreadyShown)//shows help unless it has already been shown in which case it is ignored
@@ -112,10 +108,6 @@ namespace graphsearch
                 }
 
             }
-            else
-            {
-                Console.WriteLine("No arguments were given!");
-            }
         }
 
         /// <summary>
@@ -125,10 +117,11 @@ namespace graphsearch
         /// <param name="startNode">The start node</param>
         /// <param name="endNode">The end node</param>
         /// <param name="fileToRead">The file to read</param>
+        /// <param name="chosenSort">The chosen sorting method</param>
         /// <returns>A bool representing whether the program can begin</returns>
-        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead) 
+        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort) 
         {
-            if (!failedBuild && startNode != null && endNode != null && fileToRead != null) //if the build succeeds check file location given is valid
+            if (!failedBuild && startNode != null && endNode != null && fileToRead != null && chosenSort!=sortingAlgorithm.Null) //if the build succeeds check file location given is valid
             {
                 if (File.Exists(fileToRead)) 
                 {
