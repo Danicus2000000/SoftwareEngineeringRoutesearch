@@ -212,7 +212,7 @@ namespace graphsearch
                 }
                 return true;
             }
-            catch (Exception ex) //tells prorgam the operation failed
+            catch (Exception) //tells prorgam the operation failed
             {
                 Console.WriteLine("The data in the file given was not formatted correctly!");
                 return false;
