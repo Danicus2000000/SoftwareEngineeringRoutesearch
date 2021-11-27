@@ -218,21 +218,27 @@ namespace graphsearch
         /// <param name="startNode">The start node</param>
         /// <param name="endNode">The end node</param>
         /// <param name="nodes">The list of all nodes</param>
+        /// <param name="trueStartNode">A refrence to the start node in the list of nodes</param>
+        /// <param name="trueEndNode">A refrence to the end node in the list of nodes</param>
         /// <returns>A bool representing whether the start and end node strings occur in the file</returns>
-        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes)
+        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode)
         {
             bool foundStart = false;//used to ensure we do not have to loop through all nodes every time to save time
             bool foundEnd = false;
+            trueStartNode = null;
+            trueEndNode = null;
             foreach(Node node in nodes) //sets start and end node upon finding them
             {
                 if (startNode == node.name) 
                 {
                     node.isStartNode = true;
+                    trueStartNode = node;
                     foundStart = true;
                 }
                 else if(endNode == node.name) 
                 {
                     node.isEndNode = true;
+                    trueEndNode = node;
                     foundEnd = true;
                 }
                 if(foundStart && foundEnd) 

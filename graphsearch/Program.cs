@@ -25,21 +25,21 @@ namespace graphsearch
             {
                 if(infoGet.ParseFile(fileToRead, out List<Node> nodes))//parses all file data and continues to run if it is parsed correctly
                 {
-                    if (infoGet.SetStartNodeAndEndNode(startNode, endNode, nodes))//sets start and end node properties on the appropriate files and validates start and end node strings
+                    if (infoGet.SetStartNodeAndEndNode(startNode, endNode, nodes,out Node trueStartNode,out Node trueEndNode))//sets start and end node properties on the appropriate files and validates start and end node strings
                     { 
                         switch (chosenAlgorithm)//runs the selected algorithm using the node list given in the file
                         {
                             case GetInformation.sortingAlgorithm.BF:
                                 BruteForce bruteForce= new BruteForce();
-                                bruteForce.Run(nodes);
+                                bruteForce.Run(nodes,trueStartNode,trueEndNode);
                                 break;
                             case GetInformation.sortingAlgorithm.Dijkstra:
                                 Dijkstras dijkstras= new Dijkstras();
-                                dijkstras.Run(nodes);
+                                dijkstras.Run(nodes,trueStartNode,trueEndNode);
                                 break;
                             case GetInformation.sortingAlgorithm.AStar:
                                 AStar aStar = new AStar();
-                                aStar.Run(nodes);
+                                aStar.Run(nodes,trueStartNode,trueEndNode);
                                 break;
                         }
                     }
