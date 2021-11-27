@@ -31,7 +31,8 @@ namespace graphsearch
         /// <param name="debugInfo">Whether debug infromation should be shown</param>
         /// <param name="chosenAlgorithm">The name of the chosen algorithm</param>
         /// <param name="failedBuild">Whether there has been an error during information collection</param>
-        public void GrabData(string[] pArgs, out string startNode, out string endNode, out string fileToRead, out string fileToWrite, out bool outputToConsole, out bool debugInfo, out sortingAlgorithm chosenAlgorithm, out bool failedBuild)
+        /// <returns>A fail message if a failure occurs otherwise an empty string</returns>
+        public string GrabData(string[] pArgs, out string startNode, out string endNode, out string fileToRead, out string fileToWrite, out bool outputToConsole, out bool debugInfo, out sortingAlgorithm chosenAlgorithm, out bool failedBuild)
         {
             startNode = null;//intialises variables to default values
             endNode = null;
@@ -42,6 +43,9 @@ namespace graphsearch
             chosenAlgorithm = sortingAlgorithm.Null;
             failedBuild = false;
             bool helpAlreadyShown = false; //variable to stop help showing multiple times if -h flag is used more than once in args
+            bool flagoUsed = false;
+            bool flagOUsed = false;
+            string failMessage = "";
             if (pArgs.Length != 0)//if there are any console arguments
             {
                 for (int i = 0; i < pArgs.Length; i++)//loop through all console arguments
@@ -51,18 +55,34 @@ namespace graphsearch
                         switch (pArgs[i])
                         {
                             case "-s"://if arg is -s set start node
+                                if (startNode != null) //invalidates multiple instances of the same flag
+                                {
+                                    throw new InvalidOperationException("-s flag cannot be used more than once!");
+                                }
                                 startNode = pArgs[i + 1];
                                 break;
                             case "-e"://if arg is -e set end node
+                                if (endNode != null)//invalidates multiple instances of the same flag
+                                {
+                                    throw new InvalidOperationException("-e flag cannot be used more than once!");
+                                }
                                 endNode = pArgs[i + 1];
                                 break;
                             case "-f"://if arg is -f set file to read
+                                if (fileToRead != null)//invalidates multiple instances of the same flag
+                                {
+                                    throw new InvalidOperationException("-f flag cannot be used more than once!");
+                                }
                                 fileToRead = pArgs[i + 1];
                                 break;
                             case "-o":
                             case "-O":
                                 if (pArgs[i] == "-o" || pArgs[i] == "-O")//if -o or -O flag set file output
                                 {
+                                    if (fileToWrite != null)//invalidates multiple instances of the same flag
+                                    {
+                                        throw new InvalidOperationException("-o or -O flag cannot be used more than once!");
+                                    }
                                     fileToWrite = pArgs[i + 1];
                                 }
                                 if (pArgs[i] == "-o")//if -o flag don't output to console
@@ -75,9 +95,17 @@ namespace graphsearch
                                 }
                                 break;
                             case "-d":
+                                if (debugInfo) 
+                                {
+                                    throw new InvalidOperationException("You cannot call the -d flag more than once!");
+                                }
                                 debugInfo = true;//if -d flag enable debug info
                                 break;
                             case "-a"://if a flag find sorting algorithm or if inocorrect entered throw an exception
+                                if(chosenAlgorithm != sortingAlgorithm.Null) 
+                                {
+                                    throw new InvalidOperationException("Cannot use -a flag more than once!");
+                                }
                                 if (pArgs[i + 1].ToUpper() == "DIJKSTRA")
                                 {
                                     chosenAlgorithm = sortingAlgorithm.Dijkstra;
@@ -104,16 +132,22 @@ namespace graphsearch
                                     Console.WriteLine("-h: Shows the help dialog");
                                     helpAlreadyShown = true;
                                 }
+                                else 
+                                {
+                                    throw new InvalidOperationException("You cannot use the -h flag more than once");
+                                }
                                 break;
                         }
                     }
-                    catch (Exception)//if there is an exception fail the build
+                    catch (Exception ex)//if there is an exception fail the build
                     {
                         failedBuild = true;
+                        failMessage = ex.Message;
                     }
                 }
 
             }
+            return failMessage;
         }
 
         /// <summary>
@@ -124,8 +158,9 @@ namespace graphsearch
         /// <param name="endNode">The end node</param>
         /// <param name="fileToRead">The file to read</param>
         /// <param name="chosenSort">The chosen sorting method</param>
+        /// <param name="failureMessage">A failure message to be outputted if there is one</param>
         /// <returns>A bool representing whether the program can begin</returns>
-        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort) 
+        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort,string failureMessage) 
         {
             if (!failedBuild && startNode != null && endNode != null && fileToRead != null && chosenSort!=sortingAlgorithm.Null) //if the build succeeds check file location given is valid
             {
@@ -141,7 +176,14 @@ namespace graphsearch
             }
             else //else warn that the information given is incorrect or formatted incorrectly
             {
-                Console.WriteLine("One or more required arguments where missing or invalid!");
+                if (failureMessage == "")
+                {
+                    Console.WriteLine("One or more required arguments where missing or invalid!");
+                }
+                else 
+                {
+                    Console.WriteLine(failureMessage);
+                }
                 return false;
             }
         }

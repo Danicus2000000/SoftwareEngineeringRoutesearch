@@ -5,8 +5,8 @@ namespace graphsearch
 {
     class Program
     {
-        /*Notes: The GetInfromation.Grab method will overwrite old flags with the latest ones, so if -s is declared earlier and then again further on it will take the latest mention as input and ignore the ealier one
-         * e.g. graphsearch.exe -s "hello" -e "Goodbye" -s "Update" would cause the start node to be 'update'
+        /*Notes: 
+         * The GetInfromation.Grab method will fail if muliple of the same flag type are used i.e. -s "A" -s "D" and an error message will be outputted to the user specifying the flag causing the failure 
          */
         static void Main(string[] args)
         {
@@ -20,8 +20,8 @@ namespace graphsearch
             GetInformation.sortingAlgorithm chosenAlgorithm=GetInformation.sortingAlgorithm.Null;
 
             GetInformation infoGet = new GetInformation();
-            infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
-            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm)) //checks whether the program can begin
+            string failureMessage=infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
+            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm,failureMessage)) //checks whether the program can begin
             {
                 if(infoGet.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix))//parses all file data and continues to run if it is parsed correctly
                 {
