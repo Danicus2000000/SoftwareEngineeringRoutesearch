@@ -2,7 +2,7 @@
   "profiles": {
     "graphsearch": {
       "commandName": "Project",
-      "commandLineArgs": "-s \"A\" -e \"B\" -a BF -f \"test_data_01.txt\""
+      "commandLineArgs": "-s \"L\" -e \"D\" -a ASTAR -f \"test_data_01.txt\""
     }
   }
 }
