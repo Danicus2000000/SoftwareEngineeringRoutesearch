@@ -152,12 +152,13 @@ namespace graphsearch
         /// <param name="fileToRead">The file to read</param>
         /// <param name="nodes">The list of nodes recieved from the file</param>
         /// <returns>A bool representing whether the file is formatted correctly</returns>
-        public bool ParseFile(string fileToRead, out List<Node> nodes) 
+        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix) 
         {
             FileParseMode fileMode = FileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
-            try
-            {
+            adjacencyMatrix = null;
+            //try
+            //{
                 foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
@@ -183,16 +184,22 @@ namespace graphsearch
                         {
                             bool foundNode1 = false;//stores if each node has been found
                             bool foundNode2 = false;
+                            if (adjacencyMatrix == null) 
+                            {
+                                adjacencyMatrix = new int[nodes.Count, nodes.Count];
+                            }
                             foreach (Node node in nodes)//loop through all nodes and add the mentioned edge the first number is the node that you can traverse to the second is the cost to traverse this path
                             {
                                 if (node.nodeIndex == Convert.ToInt32(lineInfo[0]))
                                 {
                                     node.paths.Add(Convert.ToInt32(lineInfo[1]), Convert.ToInt32(lineInfo[2]));
+                                    adjacencyMatrix[Convert.ToInt32(lineInfo[0])-1,Convert.ToInt32(lineInfo[1])-1]=Convert.ToInt32(lineInfo[2]);
                                     foundNode1 = true;
                                 }
                                 else if (node.nodeIndex == Convert.ToInt32(lineInfo[1]))
                                 {
                                     node.paths.Add(Convert.ToInt32(lineInfo[0]), Convert.ToInt32(lineInfo[2]));
+                                    adjacencyMatrix[Convert.ToInt32(lineInfo[1])-1, Convert.ToInt32(lineInfo[0])-1] = Convert.ToInt32(lineInfo[2]);
                                     foundNode2 = true;
                                 }
                                 if (foundNode1 && foundNode2)
@@ -204,12 +211,12 @@ namespace graphsearch
                     }
                 }
                 return true;
-            }
-            catch (Exception) //tells prorgam the operation failed
-            {
-                Console.WriteLine("The data in the file given was not formatted correctly!");
-                return false;
-            }
+            //}
+            //catch (Exception ex) //tells prorgam the operation failed
+            //{
+                //Console.WriteLine(ex.Message+" The data in the file given was not formatted correctly!");
+                //return false;
+            //}
         }
 
         /// <summary>
