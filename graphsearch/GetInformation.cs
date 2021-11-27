@@ -157,8 +157,8 @@ namespace graphsearch
             FileParseMode fileMode = FileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
             adjacencyMatrix = null;
-            //try
-            //{
+            try
+            {
                 foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
@@ -211,12 +211,12 @@ namespace graphsearch
                     }
                 }
                 return true;
-            //}
-            //catch (Exception ex) //tells prorgam the operation failed
-            //{
-                //Console.WriteLine(ex.Message+" The data in the file given was not formatted correctly!");
-                //return false;
-            //}
+            }
+            catch (Exception ex) //tells prorgam the operation failed
+            {
+                Console.WriteLine("The data in the file given was not formatted correctly!");
+                return false;
+            }
         }
 
         /// <summary>
