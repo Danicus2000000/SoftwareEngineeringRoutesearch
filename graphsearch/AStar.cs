@@ -81,18 +81,17 @@ namespace graphsearch
             {
                 if (i==0)
                 {
-                    path += "->" + pathToAdd[i]+" "+totalCost.ToString();
+                    path += "-" + pathToAdd[i]+" "+totalCost.ToString();
                 }
                 else if (pathToAdd.Count - 1 != i) 
                 {
-                    path += "->" + pathToAdd[i];
+                    path += "-" + pathToAdd[i];
                 }
                 else 
                 {
                     path=pathToAdd[i];
                 }
             }
-            Console.WriteLine(path);
             return path;
         }
 

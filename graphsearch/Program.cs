@@ -26,21 +26,34 @@ namespace graphsearch
                 if(infoGet.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix))//parses all file data and continues to run if it is parsed correctly
                 {
                     if (infoGet.SetStartNodeAndEndNode(startNode, endNode, nodes,out Node trueStartNode,out Node trueEndNode))//sets start and end node properties on the appropriate files and validates start and end node strings
-                    { 
+                    {
+                        string result = "";
                         switch (chosenAlgorithm)//runs the selected algorithm using the node list given in the file
                         {
                             case GetInformation.sortingAlgorithm.BF:
                                 BruteForce bruteForce= new BruteForce();
-                                bruteForce.Run(nodes,trueStartNode,trueEndNode);
+                                result=bruteForce.Run(nodes,trueStartNode,trueEndNode);
                                 break;
                             case GetInformation.sortingAlgorithm.Dijkstra:
                                 Dijkstras dijkstras= new Dijkstras();
-                                dijkstras.Run(nodes,trueStartNode,trueEndNode,adjacencyMatrix);
+                                result=dijkstras.Run(nodes,trueStartNode,trueEndNode,adjacencyMatrix);
                                 break;
                             case GetInformation.sortingAlgorithm.AStar:
                                 AStar aStar = new AStar();
-                                aStar.Run(nodes,trueStartNode,trueEndNode,adjacencyMatrix);
+                                result=aStar.Run(nodes,trueStartNode,trueEndNode,adjacencyMatrix);
                                 break;
+                        }
+                        if (outputToConsole) 
+                        {
+                            Console.WriteLine(result);
+                        }
+                        if (fileToWrite != null) 
+                        {
+                            File.WriteAllText(fileToWrite, result);
+                            if (debugInfo)
+                            {
+                                Console.WriteLine("Data written to " + fileToWrite);
+                            }
                         }
                     }
                 }

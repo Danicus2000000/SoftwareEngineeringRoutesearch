@@ -16,7 +16,7 @@ namespace graphsearch
         public string Run(List<Node> nodes,Node startNode,Node endNode) 
         {
             List<Node> lowestCostPath = new List<Node>();
-            return "";
+            return "Not implemented yet!";
         }
     }
 }

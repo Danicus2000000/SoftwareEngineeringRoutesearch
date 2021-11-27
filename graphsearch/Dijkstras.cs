@@ -16,7 +16,7 @@ namespace graphsearch
         /// <returns>A string describing the lowest cost path</returns>
         public string Run(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix)
         {
-            return "";
+            return "Not implemented yet!";
         }
     }
 }
