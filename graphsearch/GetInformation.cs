@@ -157,8 +157,8 @@ namespace graphsearch
             FileParseMode fileMode = FileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
             adjacencyMatrix = null;
-            try
-            {
+            //try
+            //{
                 foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
@@ -178,7 +178,7 @@ namespace graphsearch
                     {
                         if (fileMode == FileParseMode.Nodes) //if we are currently parsing for nodes
                         {
-                            nodes.Add(new Node(lineInfo[1].Replace("\"",""),Convert.ToInt32(lineInfo[0]),Convert.ToInt32(line[2]),Convert.ToInt32(lineInfo[3])));//Adds a new node with the details given in the file    
+                            nodes.Add(new Node(lineInfo[1].Replace("\"",""),Convert.ToInt32(lineInfo[0]),Convert.ToDouble(lineInfo[2]),Convert.ToDouble(lineInfo[3])));//Adds a new node with the details given in the file    
                         }
                         else if (fileMode == FileParseMode.Edges) //if we are currently parsing for edges
                         {
@@ -211,12 +211,12 @@ namespace graphsearch
                     }
                 }
                 return true;
-            }
-            catch (Exception) //tells prorgam the operation failed
-            {
-                Console.WriteLine("The data in the file given was not formatted correctly!");
-                return false;
-            }
+            //}
+            //catch (Exception) //tells prorgam the operation failed
+            //{
+                //Console.WriteLine("The data in the file given was not formatted correctly!");
+                //return false;
+            //}
         }
 
         /// <summary>

@@ -10,8 +10,8 @@ namespace graphsearch
         public int nodeIndex { get; private set; }//node index
         public bool visited { get; private set; }//if the node has been visited
         public Dictionary<int, int> paths;//contains all paths takeable from this node first int represents nodeIndex second represents cost to traverse it
-        public int xCoord { get; private set; }//the x coordinate of this node
-        public int yCoord { get; private set; }//the y coordinate of this node
+        public double xCoord { get; private set; }//the x coordinate of this node
+        public double yCoord { get; private set; }//the y coordinate of this node
         public bool isStartNode { get; set; }//wether this node is the start node
         public bool isEndNode { get; set; }//wether this node is the end node
         public int distanceFromStartNode = 0;//distance from start node at any given time during runtime
@@ -26,7 +26,7 @@ namespace graphsearch
         /// <param name="pNodeIndex">The index of the node</param>
         /// <param name="pXCoord">The x coordinate of the node</param>
         /// <param name="pYCoord">The y coordinate of the node</param>
-        public Node(string pName,int pNodeIndex,int pXCoord,int pYCoord)
+        public Node(string pName,int pNodeIndex,double pXCoord,double pYCoord)
         {
             name = pName;
             nodeIndex = pNodeIndex;
