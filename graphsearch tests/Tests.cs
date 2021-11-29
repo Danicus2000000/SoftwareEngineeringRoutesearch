@@ -4,11 +4,8 @@ using System.Collections.Generic;
 namespace graphsearch_tests
 {
     [TestClass]
-    public class AStarTests
+    public class Tests
     {
-        GetInformation parseData = new GetInformation();
-        AStar runAStar = new AStar();
-
         /// <summary>
         /// Returns the result of attempting to run the AStar Method
         /// </summary>
@@ -16,6 +13,7 @@ namespace graphsearch_tests
         /// <returns></returns>
         public string doRun(string[] args)
         {
+            GetInformation parseData = new GetInformation();
             string failureMessage = parseData.GrabData(args, out string startNode, out string endNode, out string fileToRead, out string fileToWrite, out bool outputToConsole, out bool debugInfo, out GetInformation.sortingAlgorithm chosenAlgorithm, out bool failedBuild);
             if (failureMessage=="" && parseData.CanRun(failedBuild, startNode, endNode, fileToRead, chosenAlgorithm, failureMessage,out failureMessage))
             {
@@ -25,7 +23,18 @@ namespace graphsearch_tests
                     {
                         if (failureMessage == "")
                         {
-                            return runAStar.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
+                            switch (chosenAlgorithm) 
+                            {
+                                case GetInformation.sortingAlgorithm.AStar:
+                                    AStar runAStar = new AStar();
+                                    return runAStar.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
+                                case GetInformation.sortingAlgorithm.Dijkstra:
+                                    Dijkstras runDijkstra = new Dijkstras();
+                                    return runDijkstra.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
+                                case GetInformation.sortingAlgorithm.BF:
+                                    BruteForce runBruteForce = new BruteForce();
+                                    return runBruteForce.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
+                            }
                         }
                     }
                 }
@@ -42,9 +51,18 @@ namespace graphsearch_tests
         }
 
         [TestMethod]
-        public void InvalidStart()
+        public void InvalidStartNode()
         {
             string[] args = { "-s", ";", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR" };
+            string expected = "The start node and end nodes given do not match any given in the file!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void InvalidEndNode()
+        {
+            string[] args = { "-s", "A", "-e", ";", "-f", "test_data_01.txt", "-a", "ASTAR" };
             string expected = "The start node and end nodes given do not match any given in the file!";
             string actual = doRun(args);
             Assert.AreEqual(expected, actual);

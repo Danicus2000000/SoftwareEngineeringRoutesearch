@@ -31,7 +31,7 @@ namespace graphsearch
                         {
                             case GetInformation.sortingAlgorithm.BF:
                                 BruteForce bruteForce= new BruteForce();
-                                result=bruteForce.Run(nodes,trueStartNode,trueEndNode);
+                                result=bruteForce.Run(nodes,trueStartNode,trueEndNode,adjacencyMatrix);
                                 break;
                             case GetInformation.sortingAlgorithm.Dijkstra:
                                 Dijkstras dijkstras= new Dijkstras();

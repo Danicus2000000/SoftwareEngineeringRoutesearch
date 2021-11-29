@@ -12,8 +12,9 @@ namespace graphsearch
         /// <param name="nodes">The list of nodes to parse</param>
         /// <param name="startNode">A refrence to the start node in the list</param>
         /// <param name="endNode">A refrence to the end node in the list</param>
+        /// <param name="adjacencyMatrix">A matrix describing the relation between nodes</param>
         /// <returns>A string describing the lowest cost path</returns>
-        public string Run(List<Node> nodes,Node startNode,Node endNode) 
+        public string Run(List<Node> nodes,Node startNode,Node endNode, int[,] adjacencyMatrix) 
         {
             List<Node> lowestCostPath = new List<Node>();
             return "Not implemented yet!";
