@@ -9,7 +9,6 @@ namespace graphsearch
         public string name { get; private set; } //name of node
         public int nodeIndex { get; private set; }//node index
         public bool visited { get; private set; }//if the node has been visited
-        public Dictionary<int, int> paths;//contains all paths takeable from this node first int represents nodeIndex second represents cost to traverse it
         public double xCoord { get; private set; }//the x coordinate of this node
         public double yCoord { get; private set; }//the y coordinate of this node
         public bool isStartNode { get; set; }//wether this node is the start node
@@ -31,7 +30,6 @@ namespace graphsearch
             name = pName;
             nodeIndex = pNodeIndex;
             visited = false;
-            paths = new Dictionary<int, int>();
             xCoord = pXCoord;
             yCoord = pYCoord;
             isEndNode = false;

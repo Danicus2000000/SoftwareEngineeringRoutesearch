@@ -234,13 +234,11 @@ namespace graphsearch
                             {
                                 if (node.nodeIndex == Convert.ToInt32(lineInfo[0]))
                                 {
-                                    node.paths.Add(Convert.ToInt32(lineInfo[1]), Convert.ToInt32(lineInfo[2]));
                                     adjacencyMatrix[Convert.ToInt32(lineInfo[0])-1,Convert.ToInt32(lineInfo[1])-1]=Convert.ToInt32(lineInfo[2]);
                                     foundNode1 = true;
                                 }
                                 else if (node.nodeIndex == Convert.ToInt32(lineInfo[1]))
                                 {
-                                    node.paths.Add(Convert.ToInt32(lineInfo[0]), Convert.ToInt32(lineInfo[2]));
                                     adjacencyMatrix[Convert.ToInt32(lineInfo[1])-1, Convert.ToInt32(lineInfo[0])-1] = Convert.ToInt32(lineInfo[2]);
                                     foundNode2 = true;
                                 }
