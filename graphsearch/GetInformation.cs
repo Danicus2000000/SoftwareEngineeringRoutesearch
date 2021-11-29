@@ -43,8 +43,6 @@ namespace graphsearch
             chosenAlgorithm = sortingAlgorithm.Null;
             failedBuild = false;
             bool helpAlreadyShown = false; //variable to stop help showing multiple times if -h flag is used more than once in args
-            bool flagoUsed = false;
-            bool flagOUsed = false;
             string failMessage = "";
             if (pArgs.Length != 0)//if there are any console arguments
             {
@@ -143,6 +141,7 @@ namespace graphsearch
                     {
                         failedBuild = true;
                         failMessage = ex.Message;
+                        break;
                     }
                 }
 
@@ -159,10 +158,17 @@ namespace graphsearch
         /// <param name="fileToRead">The file to read</param>
         /// <param name="chosenSort">The chosen sorting method</param>
         /// <param name="failureMessage">A failure message to be outputted if there is one</param>
+        /// <param name="failureMessageUpdate">Updates the failure message data with a new failure if there is one</param>
         /// <returns>A bool representing whether the program can begin</returns>
-        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort,string failureMessage) 
+        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort,string failureMessage,out string failureMessageUpdate) 
         {
-            if (!failedBuild && startNode != null && endNode != null && fileToRead != null && chosenSort!=sortingAlgorithm.Null) //if the build succeeds check file location given is valid
+            failureMessageUpdate = failureMessage;
+            if (failureMessage != "") 
+            {
+                Console.WriteLine(failureMessage);
+                return false;
+            }
+            else if (!failedBuild && startNode != null && endNode != null && fileToRead != null && chosenSort!=sortingAlgorithm.Null) //if the build succeeds check file location given is valid
             {
                 if (File.Exists(fileToRead)) 
                 {
@@ -170,20 +176,15 @@ namespace graphsearch
                 }
                 else 
                 {
+                    failureMessageUpdate = "The requested file does not exist!";
                     Console.WriteLine("The requested file does not exist!");
                     return false;
                 }
             }
             else //else warn that the information given is incorrect or formatted incorrectly
             {
-                if (failureMessage == "")
-                {
-                    Console.WriteLine("One or more required arguments where missing or invalid!");
-                }
-                else 
-                {
-                    Console.WriteLine(failureMessage);
-                }
+                failureMessageUpdate = "One or more required arguments where missing or invalid!";
+                Console.WriteLine("One or more required arguments where missing or invalid!");
                 return false;
             }
         }
@@ -193,14 +194,17 @@ namespace graphsearch
         /// </summary>
         /// <param name="fileToRead">The file to read</param>
         /// <param name="nodes">The list of nodes recieved from the file</param>
+        /// <param name="adjacencyMatrix">Stores the relation of all nodes in form adjacencymatrix[NodeFrom][NodeTo]=weight</param>
+        /// <param name="failureMessage">Stores a failure message if there is one</param>
         /// <returns>A bool representing whether the file is formatted correctly</returns>
-        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix) 
+        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix, out string failureMessage) 
         {
+            failureMessage = "";
             FileParseMode fileMode = FileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
             adjacencyMatrix = null;
-            //try
-            //{
+            try
+            {
                 foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
@@ -251,12 +255,13 @@ namespace graphsearch
                     }
                 }
                 return true;
-            //}
-            //catch (Exception) //tells prorgam the operation failed
-            //{
-                //Console.WriteLine("The data in the file given was not formatted correctly!");
-                //return false;
-            //}
+            }
+            catch (Exception) //tells prorgam the operation failed
+            {
+                failureMessage = "The data in the file given was not formatted correctly!";
+                Console.WriteLine("The data in the file given was not formatted correctly!");
+                return false;
+            }
         }
 
         /// <summary>
@@ -267,9 +272,11 @@ namespace graphsearch
         /// <param name="nodes">The list of all nodes</param>
         /// <param name="trueStartNode">A refrence to the start node in the list of nodes</param>
         /// <param name="trueEndNode">A refrence to the end node in the list of nodes</param>
+        /// <param name="failureMessage">Outputs failure message if there is one</param>
         /// <returns>A bool representing whether the start and end node strings occur in the file</returns>
-        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode)
+        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode,out string failureMessage)
         {
+            failureMessage = "";
             bool foundStart = false;//used to ensure we do not have to loop through all nodes every time to save time
             bool foundEnd = false;
             trueStartNode = null;
@@ -295,6 +302,7 @@ namespace graphsearch
             }
             if(!foundStart || !foundEnd) //ensures that the start node and end node given are in the file by returning false if they are not found
             {
+                failureMessage = "The start node and end nodes given do not match any given in the file!";
                 Console.WriteLine("The start node and end nodes given do not match any given in the file!");
                 return false;
             }

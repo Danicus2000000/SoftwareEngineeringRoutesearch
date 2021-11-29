@@ -4,7 +4,7 @@ using System.Text;
 
 namespace graphsearch
 {
-    class Dijkstras
+    public class Dijkstras
     {
         /// <summary>
         /// Runs Dijkstras on a list of nodes

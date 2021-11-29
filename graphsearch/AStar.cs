@@ -4,7 +4,7 @@ using System.Text;
 
 namespace graphsearch
 {
-    class AStar
+    public class AStar
     {
         /// <summary>
         /// Runs A* on a list of nodes
@@ -60,7 +60,6 @@ namespace graphsearch
                 currentNode = cheapestNode;
             }
             Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
-            string pathFromStartToEnd = "";
             int totalCost = 0;
             List<string> pathToAdd = new List<string>();
             pathToAdd.Add(endNode.name);

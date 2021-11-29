@@ -4,7 +4,7 @@ using System.Text;
 
 namespace graphsearch
 {
-    class BruteForce
+    public class BruteForce
     {
         /// <summary>
         /// Runs Brute force on a list of nodes
