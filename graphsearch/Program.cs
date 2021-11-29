@@ -20,11 +20,11 @@ namespace graphsearch
             GetInformation.sortingAlgorithm chosenAlgorithm=GetInformation.sortingAlgorithm.Null;
             GetInformation infoGet = new GetInformation();
             string failureMessage=infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
-            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm,failureMessage,out failureMessage)) //checks whether the program can begin
+            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm,failureMessage)) //checks whether the program can begin
             {
-                if(infoGet.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix,out failureMessage))//parses all file data and continues to run if it is parsed correctly
+                if(infoGet.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix))//parses all file data and continues to run if it is parsed correctly
                 {
-                    if (infoGet.SetStartNodeAndEndNode(startNode, endNode, nodes,out Node trueStartNode,out Node trueEndNode,out failureMessage))//sets start and end node properties on the appropriate files and validates start and end node strings
+                    if (infoGet.SetStartNodeAndEndNode(startNode, endNode, nodes,out Node trueStartNode,out Node trueEndNode))//sets start and end node properties on the appropriate files and validates start and end node strings
                     {
                         string result = "";
                         switch (chosenAlgorithm)//runs the selected algorithm using the node list given in the file

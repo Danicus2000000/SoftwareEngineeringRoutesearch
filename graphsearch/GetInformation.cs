@@ -158,11 +158,9 @@ namespace graphsearch
         /// <param name="fileToRead">The file to read</param>
         /// <param name="chosenSort">The chosen sorting method</param>
         /// <param name="failureMessage">A failure message to be outputted if there is one</param>
-        /// <param name="failureMessageUpdate">Updates the failure message data with a new failure if there is one</param>
         /// <returns>A bool representing whether the program can begin</returns>
-        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort,string failureMessage,out string failureMessageUpdate) 
+        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort,string failureMessage) 
         {
-            failureMessageUpdate = failureMessage;
             if (failureMessage != "") 
             {
                 Console.WriteLine(failureMessage);
@@ -176,14 +174,12 @@ namespace graphsearch
                 }
                 else 
                 {
-                    failureMessageUpdate = "The requested file does not exist!";
                     Console.WriteLine("The requested file does not exist!");
                     return false;
                 }
             }
             else //else warn that the information given is incorrect or formatted incorrectly
             {
-                failureMessageUpdate = "One or more required arguments where missing or invalid!";
                 Console.WriteLine("One or more required arguments where missing or invalid!");
                 return false;
             }
@@ -197,9 +193,8 @@ namespace graphsearch
         /// <param name="adjacencyMatrix">Stores the relation of all nodes in form adjacencymatrix[NodeFrom][NodeTo]=weight</param>
         /// <param name="failureMessage">Stores a failure message if there is one</param>
         /// <returns>A bool representing whether the file is formatted correctly</returns>
-        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix, out string failureMessage) 
+        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix) 
         {
-            failureMessage = "";
             FileParseMode fileMode = FileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
             adjacencyMatrix = null;
@@ -258,7 +253,6 @@ namespace graphsearch
             }
             catch (Exception) //tells prorgam the operation failed
             {
-                failureMessage = "The data in the file given was not formatted correctly!";
                 Console.WriteLine("The data in the file given was not formatted correctly!");
                 return false;
             }
@@ -274,9 +268,8 @@ namespace graphsearch
         /// <param name="trueEndNode">A refrence to the end node in the list of nodes</param>
         /// <param name="failureMessage">Outputs failure message if there is one</param>
         /// <returns>A bool representing whether the start and end node strings occur in the file</returns>
-        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode,out string failureMessage)
+        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode)
         {
-            failureMessage = "";
             bool foundStart = false;//used to ensure we do not have to loop through all nodes every time to save time
             bool foundEnd = false;
             trueStartNode = null;
@@ -302,7 +295,6 @@ namespace graphsearch
             }
             if(!foundStart || !foundEnd) //ensures that the start node and end node given are in the file by returning false if they are not found
             {
-                failureMessage = "The start node and end nodes given do not match any given in the file!";
                 Console.WriteLine("The start node and end nodes given do not match any given in the file!");
                 return false;
             }

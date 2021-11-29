@@ -27,20 +27,18 @@ namespace graphsearch
             Node currentNode=startNode;//sets current node to start node
             while (currentNode!=endNode) //while we are not at the destination
             {
-                for(int i = 0; i < adjacencyMatrix.GetLength(0); i++) //loops through all adjacency matrix to current node
+                int adjacentRowToSearch =nodes.IndexOf(currentNode);
+                for(int j=0; j< adjacencyMatrix.GetLength(1); j++) 
                 {
-                    for(int j=0; j< adjacencyMatrix.GetLength(1); j++) 
+                    if (adjacencyMatrix[adjacentRowToSearch, j] != 0 && !openNodes.Contains(nodes[j]) && !closedNodes.Contains(nodes[j])) //if a matrix value has a weight and has not been cheked already
                     {
-                        if (adjacencyMatrix[i, j] != 0 && !openNodes.Contains(nodes[j]) && !closedNodes.Contains(nodes[j]) && nodes.IndexOf(currentNode)==i) //if a matrix value has a weight and has not been cheked and is adjacent to current node
+                        nodes[j].distanceFromStartNode=adjacencyMatrix[adjacentRowToSearch, j]+nodes[adjacentRowToSearch].distanceFromStartNode;//increase distance from start node on specified node
+                        if (nodes[j].distanceFromStartNode + nodes[j].heuristicDistance < nodes[j].totalDistance) //if the new total is a cheaper route
                         {
-                            nodes[j].distanceFromStartNode=adjacencyMatrix[i, j]+nodes[i].distanceFromStartNode;//increase distance from start node on specified node
-                            if (nodes[j].distanceFromStartNode + nodes[j].heuristicDistance < nodes[j].totalDistance) //if the new total is a cheaper route
-                            {
-                                nodes[j].totalDistance = (double)nodes[j].distanceFromStartNode + nodes[j].heuristicDistance;//update the route cost and previous path to this node
-                                nodes[j].previousNode = currentNode.name;
-                            }
-                            openNodes.Add(nodes[j]);//add to open nodes
+                            nodes[j].totalDistance = (double)nodes[j].distanceFromStartNode + nodes[j].heuristicDistance;//update the route cost and previous path to this node
+                            nodes[j].previousNode = currentNode.name;
                         }
+                        openNodes.Add(nodes[j]);//add to open nodes
                     }
                 }
                 Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
@@ -56,7 +54,7 @@ namespace graphsearch
                     }
                 }
                 openNodes.Remove(cheapestNode);
-                closedNodes.Add(cheapestNode);
+                //closedNodes.Add(cheapestNode);
                 currentNode = cheapestNode;
             }
             Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
