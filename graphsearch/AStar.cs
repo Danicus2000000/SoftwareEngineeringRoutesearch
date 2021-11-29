@@ -23,7 +23,7 @@ namespace graphsearch
             {
                 node.heuristicDistance=GetHeuristicDistance(node.xCoord,node.yCoord,endNode.xCoord,endNode.yCoord);
             }
-            openNodes.Add(startNode);//adds start node to the open nodes pile
+            openNodes.Add(startNode);//adds start node to the open nodes list
             Node currentNode=startNode;//sets current node to start node
             while (currentNode!=endNode) //while we are not at the destination
             {
