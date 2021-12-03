@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Linq;
 namespace graphsearch
 {
     public class Dijkstras
@@ -18,22 +18,24 @@ namespace graphsearch
         {
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();//creates list to store completed nodes
+            List<Node> nodesQueue = nodes;
             openNodes.Add(startNode);//adds start node to the open nodes pile
             Node currentNode = startNode;//sets current node to start node
-            while (currentNode != endNode) //while we are not at the destination
+            do //while we are not at the destination
             {
-                int AdjacentRowToSearch = nodes.IndexOf(currentNode);
+                nodesQueue.OrderBy(x => x.distanceFromStartNode).ToList();
+                int AdjacentRowToSearch = nodesQueue.IndexOf(currentNode);
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0 && !openNodes.Contains(nodes[j]) && !closedNodes.Contains(nodes[j])) //if a matrix value has a weight and has not been cheked and is adjacent to current node
+                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0 && !openNodes.Contains(nodesQueue[j]) && !closedNodes.Contains(nodesQueue[j])) //if a matrix value has a weight and has not been cheked and is adjacent to current node
                     {
-                        nodes[j].distanceFromStartNode = adjacencyMatrix[AdjacentRowToSearch, j] + nodes[AdjacentRowToSearch].distanceFromStartNode;//increase distance from start node on specified node
-                        if (nodes[j].distanceFromStartNode < nodes[j].totalDistance) //if the new total is a cheaper route
+                        nodesQueue[j].distanceFromStartNode = adjacencyMatrix[AdjacentRowToSearch, j] + nodesQueue[AdjacentRowToSearch].distanceFromStartNode;//increase distance from start node on specified node
+                        if (nodesQueue[j].distanceFromStartNode < nodesQueue[j].totalDistance) //if the new total is a cheaper route
                         {
-                            nodes[j].totalDistance = (double)nodes[j].distanceFromStartNode;//update the route cost and previous path to this node
-                            nodes[j].previousNode = currentNode.name;
+                            nodesQueue[j].totalDistance = (double)nodesQueue[j].distanceFromStartNode;//update the route cost and previous path to this node
+                            nodesQueue[j].previousNode = currentNode.name;
                         }
-                        openNodes.Add(nodes[j]);//add to open nodes
+                        openNodes.Add(nodesQueue[j]);//add to open nodes
                     }
                 }
                 Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
@@ -50,7 +52,7 @@ namespace graphsearch
                 }
                 openNodes.Remove(cheapestNode);
                 currentNode = cheapestNode;
-            }
+            } while (currentNode != endNode);
             Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
             int totalCost = 0;
             List<string> pathToAdd = new List<string>();
