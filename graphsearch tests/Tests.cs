@@ -90,7 +90,50 @@ namespace graphsearch_tests
             string actual = doRun(args);
             Assert.AreEqual(expected, actual);
         }
+        [TestMethod]
+        public void multipleUseOfSFlag()
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR", "-o", "test.txt", "-s", "B" };
+            string expected = "-s flag cannot be used more than once!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
 
+        [TestMethod]
+        public void multipleUseOfEFlag()
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR", "-o", "test.txt", "-e", "B" };
+            string expected = "-e flag cannot be used more than once!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void multipleUseOfFFlag()
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR", "-o", "test.txt", "-f", "test_data_02.txt" };
+            string expected = "-f flag cannot be used more than once!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void multipleUseOfAFlag()
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR", "-o", "test.txt", "-a", "BF" };
+            string expected = "-a flag cannot be used more than once!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void multipleUseOfDFlag()
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR", "-o", "test.txt", "-d", "-d" };
+            string expected = "You cannot call the -d flag more than once!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
         [TestMethod]
         public void BasicAStarTest()//tests a basic run through of the A star system
         {

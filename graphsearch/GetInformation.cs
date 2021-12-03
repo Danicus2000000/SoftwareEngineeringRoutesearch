@@ -105,7 +105,7 @@ namespace graphsearch
                             case "-a"://if a flag find sorting algorithm or if inocorrect entered throw an exception
                                 if(chosenAlgorithm != sortingAlgorithm.Null) 
                                 {
-                                    throw new InvalidOperationException("Cannot use -a flag more than once!");
+                                    throw new InvalidOperationException("-a flag cannot be used more than once!");
                                 }
                                 if (pArgs[i + 1].ToUpper() == "DIJKSTRA")
                                 {
