@@ -16,7 +16,34 @@ namespace graphsearch
         /// <returns>A string describing the lowest cost path</returns>
         public string Run(List<Node> nodes,Node startNode,Node endNode, int[,] adjacencyMatrix) 
         {
-            List<Node> lowestCostPath = new List<Node>();
+            Node currentNode= startNode;
+            int adjacencyIndex=nodes.IndexOf(currentNode);
+            while (currentNode != endNode)
+            {
+                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
+                {
+                    if (adjacencyMatrix[adjacencyIndex, j] != 0)
+                    {
+                        nodes[j].distanceFromStartNode = currentNode.distanceFromStartNode + adjacencyMatrix[adjacencyIndex, j];
+                        if (nodes[j].distanceFromStartNode < nodes[j].totalDistance)
+                        {
+                            nodes[j].totalDistance=nodes[j].distanceFromStartNode;
+                            nodes[j].previousNode = nodes[adjacencyIndex].name;
+                        }
+                    }
+                }
+                Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
+                double cheapestNodeValue = 999999999;
+                foreach (Node node in nodes)
+                {
+                    if (node.totalDistance < cheapestNodeValue)
+                    {
+                        cheapestNode = node;
+                        cheapestNodeValue = node.totalDistance;
+                    }
+                }
+                currentNode = cheapestNode;
+            }
             return "Not implemented yet!";
         }
     }

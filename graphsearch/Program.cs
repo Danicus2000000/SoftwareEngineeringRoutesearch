@@ -19,8 +19,8 @@ namespace graphsearch
             bool failedBuild = false;
             GetInformation.sortingAlgorithm chosenAlgorithm=GetInformation.sortingAlgorithm.Null;
             GetInformation infoGet = new GetInformation();
-            string failureMessage=infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
-            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm,failureMessage)) //checks whether the program can begin
+            infoGet.GrabData(args, out startNode, out endNode, out fileToRead, out fileToWrite, out outputToConsole, out debugInfo, out chosenAlgorithm, out failedBuild);//uses grab method to parse console arguments
+            if (infoGet.CanRun(failedBuild, startNode, endNode, fileToRead,chosenAlgorithm)) //checks whether the program can begin
             {
                 if(infoGet.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix))//parses all file data and continues to run if it is parsed correctly
                 {

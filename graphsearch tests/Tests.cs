@@ -20,27 +20,24 @@ namespace graphsearch_tests
             Console.SetOut(failure);
             using (failure)
             {
-                string failureMessage = parseData.GrabData(args, out string startNode, out string endNode, out string fileToRead, out string fileToWrite, out bool outputToConsole, out bool debugInfo, out GetInformation.sortingAlgorithm chosenAlgorithm, out bool failedBuild);
-                if (failureMessage == "" && parseData.CanRun(failedBuild, startNode, endNode, fileToRead, chosenAlgorithm, failureMessage))
+                parseData.GrabData(args, out string startNode, out string endNode, out string fileToRead, out string fileToWrite, out bool outputToConsole, out bool debugInfo, out GetInformation.sortingAlgorithm chosenAlgorithm, out bool failedBuild);
+                if (parseData.CanRun(failedBuild, startNode, endNode, fileToRead, chosenAlgorithm))
                 {
-                    if (failureMessage == "" && parseData.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix))
+                    if (parseData.ParseFile(fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix))
                     {
                         if (parseData.SetStartNodeAndEndNode(startNode, endNode, nodes, out Node trueStartNode, out Node trueEndNode))
                         {
-                            if (failureMessage == "")
+                            switch (chosenAlgorithm)
                             {
-                                switch (chosenAlgorithm)
-                                {
-                                    case GetInformation.sortingAlgorithm.AStar:
-                                        AStar runAStar = new AStar();
-                                        return runAStar.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
-                                    case GetInformation.sortingAlgorithm.Dijkstra:
-                                        Dijkstras runDijkstra = new Dijkstras();
-                                        return runDijkstra.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
-                                    case GetInformation.sortingAlgorithm.BF:
-                                        BruteForce runBruteForce = new BruteForce();
-                                        return runBruteForce.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
-                                }
+                                case GetInformation.sortingAlgorithm.AStar:
+                                    AStar runAStar = new AStar();
+                                    return runAStar.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
+                                case GetInformation.sortingAlgorithm.Dijkstra:
+                                    Dijkstras runDijkstra = new Dijkstras();
+                                    return runDijkstra.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
+                                case GetInformation.sortingAlgorithm.BF:
+                                    BruteForce runBruteForce = new BruteForce();
+                                    return runBruteForce.Run(nodes, trueStartNode, trueEndNode, adjacencyMatrix);
                             }
                         }
                     }
@@ -79,8 +76,17 @@ namespace graphsearch_tests
         [TestMethod]
         public void InvalidSort()
         {
-            string[] args = { "-s", "A", "-e", "L", "-f", ";", "-a", ";" };
-            string expected = "One or more required arguments where missing or invalid!";
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", ";" };
+            string expected = "An invalid sort option was entered!";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void usingBothOFlags()
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR","-o", "test.txt","-O","test.txt"};
+            string expected = "-o or -O flag cannot be used more than once!";
             string actual = doRun(args);
             Assert.AreEqual(expected, actual);
         }
@@ -98,6 +104,15 @@ namespace graphsearch_tests
         public void BasicDijkstraTest()//tests a basic run through of the Dijkstra system
         {
             string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "DIJKSTRA" };
+            string expected = "A-B-F-I-L 19";
+            string actual = doRun(args);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void BasicBruteForceTest()//tests a basic run through of the Dijkstra system
+        {
+            string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "BF" };
             string expected = "A-B-F-I-L 19";
             string actual = doRun(args);
             Assert.AreEqual(expected, actual);
