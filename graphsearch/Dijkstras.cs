@@ -31,7 +31,7 @@ namespace graphsearch
                 int AdjacentRowToSearch = nodes.IndexOf(currentNode);
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0 && !openNodes.Contains(nodes[j]) && !closedNodes.Contains(nodes[j]) && !currentNode.visited) //if a matrix value has a weight and has not been cheked and is adjacent to current node
+                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0 && !openNodes.Contains(nodes[j]) && !closedNodes.Contains(nodes[j])) //if a matrix value has a weight and has not been cheked and is adjacent to current node
                     {
                         nodes[j].distanceFromStartNode = adjacencyMatrix[AdjacentRowToSearch, j] + nodes[AdjacentRowToSearch].distanceFromStartNode;//increase distance from start node on specified node
                         if (nodes[j].distanceFromStartNode < nodes[j].totalDistance) //if the new total is a cheaper route
@@ -39,7 +39,8 @@ namespace graphsearch
                             nodes[j].totalDistance = (double)nodes[j].distanceFromStartNode;//update the route cost and previous path to this node
                             nodes[j].previousNode = currentNode.name;
                         }
-                        openNodes.Add(nodes[j]);//add to open nodes
+                        openNodes.Add(nodes[j]);
+                        //add to open nodes
                     }
                 }
                 currentNode.visited = true;
