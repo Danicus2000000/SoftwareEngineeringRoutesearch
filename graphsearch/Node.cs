@@ -8,7 +8,6 @@ namespace graphsearch
     {
         public string name { get; private set; } //name of node
         public int nodeIndex { get; private set; }//node index
-        public bool visited { get; private set; }//if the node has been visited
         public double xCoord { get; private set; }//the x coordinate of this node
         public double yCoord { get; private set; }//the y coordinate of this node
         public bool isStartNode { get; set; }//wether this node is the start node
@@ -17,6 +16,7 @@ namespace graphsearch
         public double heuristicDistance = 0;//distance from end node ignoring all obsticals
         public string previousNode=null;//previous node used to traverse to this point
         public double totalDistance = 999999999;//calculates total distance including from start and heuristic
+        public bool visited = false;//if the node has been visited
 
         /// <summary>
         /// Intialiser for a Node

@@ -57,25 +57,9 @@ namespace graphsearch
                 //closedNodes.Add(cheapestNode);
                 currentNode = cheapestNode;
             }
-            Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
-            int totalCost = 0;
-            List<string> pathToAdd = new List<string>();
-            pathToAdd.Add(endNode.name);
-            do
-            {
-                foreach (Node node in nodes)
-                {
-                    if (node.name == current.previousNode)
-                    {
-                        pathToAdd.Add(node.name);
-                        totalCost += adjacencyMatrix[node.nodeIndex-1, current.nodeIndex-1];
-                        current = node;
-                        break;
-                    }
-                }
-
-            } while (current != startNode);
-            return BuildPathFromStartToEnd(pathToAdd,totalCost);
+            GetInformation infoParse= new GetInformation();
+            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);
+            return infoParse.BuildPathFromStartToEnd(pathToAdd,totalCost);
         }
 
         /// <summary>
@@ -89,33 +73,6 @@ namespace graphsearch
         private static double GetHeuristicDistance(double currentNodeX, double currentNodeY, double endNodeX, double endNodeY)
         {
             return Math.Sqrt(Math.Pow((endNodeX - currentNodeX), 2) + Math.Pow((endNodeY - currentNodeY), 2));
-        }
-
-        /// <summary>
-        /// Inverses the list of path adding the hythens between them and appends total cost to the end of the string in order to create valid path value
-        /// </summary>
-        /// <param name="pathToAdd">The list of all nodes taken in the path in inverse order</param>
-        /// <param name="totalCost">The total cost to traverse all nodes in the path</param>
-        /// <returns></returns>
-        private static string BuildPathFromStartToEnd(List<string> pathToAdd, int totalCost) 
-        {
-            string pathFromStartToEnd = "";
-            for (int i = pathToAdd.Count - 1; i != -1; i--) //this is then rebuilt from the list into a human readable string
-            {
-                if (i == 0)
-                {
-                    pathFromStartToEnd += "-" + pathToAdd[i] + " " + totalCost.ToString();
-                }
-                else if (pathToAdd.Count - 1 != i)
-                {
-                    pathFromStartToEnd += "-" + pathToAdd[i];
-                }
-                else
-                {
-                    pathFromStartToEnd = pathToAdd[i];
-                }
-            }
-            return pathFromStartToEnd;
         }
     }
 }

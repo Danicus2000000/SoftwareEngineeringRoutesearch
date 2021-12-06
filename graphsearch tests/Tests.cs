@@ -138,7 +138,7 @@ namespace graphsearch_tests
         public void BasicAStarTest()//tests a basic run through of the A star system
         {
             string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR" };
-            string expected = "A-B-F-I-L 19";
+            string expected = "A-C-G-K-L 24";
             string actual = doRun(args);
             Assert.AreEqual(expected, actual);
         }

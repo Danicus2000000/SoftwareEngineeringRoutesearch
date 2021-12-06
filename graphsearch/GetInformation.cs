@@ -303,5 +303,64 @@ namespace graphsearch
                 return true;
             }
         }
+
+        /// <summary>
+        /// Inverses the list of path adding the hythens between them and appends total cost to the end of the string in order to create valid path value
+        /// </summary>
+        /// <param name="pathToAdd">The list of all nodes taken in the path in inverse order</param>
+        /// <param name="totalCost">The total cost to traverse all nodes in the path</param>
+        /// <returns></returns>
+        public string BuildPathFromStartToEnd(List<string> pathToAdd, int totalCost)
+        {
+            string pathFromStartToEnd = "";
+            for (int i = pathToAdd.Count - 1; i != -1; i--) //this is then rebuilt from the list into a human readable string
+            {
+                if (i == 0)
+                {
+                    pathFromStartToEnd += "-" + pathToAdd[i] + " " + totalCost.ToString();
+                }
+                else if (pathToAdd.Count - 1 != i)
+                {
+                    pathFromStartToEnd += "-" + pathToAdd[i];
+                }
+                else
+                {
+                    pathFromStartToEnd = pathToAdd[i];
+                }
+            }
+            return pathFromStartToEnd;
+        }
+
+        /// <summary>
+        /// Gets the list of Node names that represent the shortest path
+        /// </summary>
+        /// <param name="nodes">All nodes</param>
+        /// <param name="startNode">The start node</param>
+        /// <param name="endNode">The end node</param>
+        /// <param name="adjacencyMatrix">The relation between all nodes</param>
+        /// <param name="totalCost">The cost of traversing the shortest path</param>
+        /// <returns></returns>
+        public List<string> getTakenPath(List<Node> nodes,Node startNode, Node endNode,int[,] adjacencyMatrix, out int totalCost) 
+        {
+            Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
+            totalCost = 0;
+            List<string> pathToAdd = new List<string>();
+            pathToAdd.Add(endNode.name);
+            do
+            {
+                foreach (Node node in nodes)
+                {
+                    if (node.name == current.previousNode)
+                    {
+                        pathToAdd.Add(node.name);
+                        totalCost += adjacencyMatrix[node.nodeIndex - 1, current.nodeIndex - 1];
+                        current = node;
+                        break;
+                    }
+                }
+
+            } while (current != startNode);
+            return pathToAdd;
+        }
     }
 }

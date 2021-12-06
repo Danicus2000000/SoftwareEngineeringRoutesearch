@@ -44,7 +44,9 @@ namespace graphsearch
                 }
                 currentNode = cheapestNode;
             }
-            return "Not implemented yet!";
+            GetInformation infoParse = new GetInformation();
+            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);
+            return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);
         }
     }
 }
