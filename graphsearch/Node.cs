@@ -12,10 +12,10 @@ namespace graphsearch
         public double yCoord { get; private set; }//the y coordinate of this node
         public bool isStartNode { get; set; }//wether this node is the start node
         public bool isEndNode { get; set; }//wether this node is the end node
-        public int distanceFromStartNode = 0;//distance from start node at any given time during runtime
+        public double distanceFromStartNode = 0;//distance from start node at any given time during runtime
         public double heuristicDistance = 0;//distance from end node ignoring all obsticals
         public string previousNode=null;//previous node used to traverse to this point
-        public double totalDistance = 999999999;//calculates total distance including from start and heuristic
+        public double totalDistance = double.PositiveInfinity;//calculates total distance including from start and heuristic
         public bool visited = false;//if the node has been visited
 
         /// <summary>

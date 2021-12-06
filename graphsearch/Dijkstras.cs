@@ -43,7 +43,7 @@ namespace graphsearch
                 }
                 currentNode.visited = true;
                 Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
-                double cheapestNodeValue = 999999999;
+                double cheapestNodeValue = double.PositiveInfinity;
                 openNodes.Remove(currentNode);
                 closedNodes.Add(currentNode);
                 foreach (Node node in openNodes)

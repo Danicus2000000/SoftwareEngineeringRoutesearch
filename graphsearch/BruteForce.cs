@@ -20,14 +20,14 @@ namespace graphsearch
             int adjacencyIndex=nodes.IndexOf(currentNode);
             while (currentNode != endNode)
             {
-                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
+                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)//loops through all nodes that could be accociated to the current node
                 {
-                    if (adjacencyMatrix[adjacencyIndex, j] != 0)
+                    if (adjacencyMatrix[adjacencyIndex, j] != 0)//if there is a link
                     {
-                        nodes[j].distanceFromStartNode = currentNode.distanceFromStartNode + adjacencyMatrix[adjacencyIndex, j];
-                        if (nodes[j].distanceFromStartNode < nodes[j].totalDistance)
+                        nodes[j].distanceFromStartNode = currentNode.distanceFromStartNode + adjacencyMatrix[adjacencyIndex, j];//set temp distance to be distance from start
+                        if (nodes[j].distanceFromStartNode < nodes[j].totalDistance)//if this is more efficient than previous route
                         {
-                            nodes[j].totalDistance=nodes[j].distanceFromStartNode;
+                            nodes[j].totalDistance=nodes[j].distanceFromStartNode;//change node to use this route
                             nodes[j].previousNode = nodes[adjacencyIndex].name;
                         }
                     }
