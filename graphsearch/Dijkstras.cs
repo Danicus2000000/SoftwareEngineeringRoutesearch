@@ -6,6 +6,11 @@ namespace graphsearch
 {
     public class Dijkstras
     {
+        /*
+         * A-K E: 15 A: 17
+         * A-G E: 9  A: 11
+         * A-E E: 13 A: 6
+         */
         /// <summary>
         /// Runs Dijkstras on a list of nodes
         /// </summary>
