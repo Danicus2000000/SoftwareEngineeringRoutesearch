@@ -362,5 +362,25 @@ namespace graphsearch
             } while (current != startNode);
             return pathToAdd;
         }
+
+        /// <summary>
+        /// Gets the node with the lowest totalDistance field
+        /// </summary>
+        /// <param name="nodesToCheck">The nodes list to find the lowest value in</param>
+        /// <returns></returns>
+        public Node getCheapestNode(List<Node> nodesToCheck) 
+        {
+            Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
+            double cheapestNodeValue = 999999999;
+            foreach (Node node in nodesToCheck)
+            {
+                if (node.totalDistance < cheapestNodeValue)
+                {
+                    cheapestNode = node;
+                    cheapestNodeValue = node.totalDistance;
+                }
+            }
+            return cheapestNode;
+        }
     }
 }

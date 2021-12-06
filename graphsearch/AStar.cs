@@ -16,6 +16,7 @@ namespace graphsearch
         /// <returns>A string describing the lowest cost path</returns>
         public string Run(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix)
         {
+            GetInformation infoParse = new GetInformation();
             List<Node> openNodes=new List<Node>();
             List<Node> closedNodes = new List<Node>();//creates list to store completed nodes
             startNode.heuristicDistance=GetHeuristicDistance(startNode.xCoord,startNode.yCoord,endNode.xCoord,endNode.yCoord);//sets all nodes heuristic distance from the end node
@@ -41,23 +42,12 @@ namespace graphsearch
                         openNodes.Add(nodes[j]);//add to open nodes
                     }
                 }
-                Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
-                double cheapestNodeValue = 999999999;
+                //once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
                 openNodes.Remove(currentNode);
                 closedNodes.Add(currentNode);
-                foreach(Node node in openNodes) 
-                {
-                    if (node.totalDistance < cheapestNodeValue) 
-                    {
-                        cheapestNode = node;
-                        cheapestNodeValue = node.totalDistance;
-                    }
-                }
-                openNodes.Remove(cheapestNode);
-                //closedNodes.Add(cheapestNode);
-                currentNode = cheapestNode;
+                currentNode = infoParse.getCheapestNode(openNodes);
+                openNodes.Remove(currentNode);
             }
-            GetInformation infoParse= new GetInformation();
             List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);
             return infoParse.BuildPathFromStartToEnd(pathToAdd,totalCost);
         }
