@@ -16,7 +16,7 @@ namespace graphsearch
         /// <returns>A string describing the lowest cost path</returns>
         public string Run(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix)
         {
-            GetInformation infoParse=new GetInformation();
+            GetInformation infoParse = new GetInformation();
             Node currentNode = startNode;
             List<List<Node>> paths = new List<List<Node>>() { new List<Node>() { currentNode } };
             List<Node> open = new List<Node>() { currentNode };
