@@ -295,7 +295,7 @@ namespace graphsearch
             }
             if(!foundStart || !foundEnd) //ensures that the start node and end node given are in the file by returning false if they are not found
             {
-                Console.WriteLine("The start node and end nodes given do not match any given in the file!");
+                Console.WriteLine("The start node or end node does not match any given in the file!");
                 return false;
             }
             else 

@@ -18,15 +18,14 @@ namespace graphsearch
         {
             GetInformation infoParse = new GetInformation();
             Node currentNode = startNode;
-            List<List<Node>> paths = new List<List<Node>>() { new List<Node>() { currentNode } };
-            List<Node> open = new List<Node>() { currentNode };
+            List<Node> open = new List<Node>() { currentNode };//tracks nodes that have been searched and nodes currently being search
             List<Node> closed = new List<Node>();
             while (currentNode != endNode)//loop until either the open list is empty or the end node is found
             {
-                int iToSearch = nodes.IndexOf(open[0]);
-                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
+                int iToSearch = nodes.IndexOf(open[0]);//sets index to first open node
+                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)//loops through all nodes finding the connections and if it is the shortest we add it
                 {
-                    if (adjacencyMatrix[iToSearch, j] != 0 && !open.Contains(nodes[j]) && !closed.Contains(nodes[j]))
+                    if (adjacencyMatrix[iToSearch, j] != 0 && !open.Contains(nodes[j]) && !closed.Contains(nodes[j]))//if the node has not yet been checked
                     {
                         open.Add(nodes[j]);
                         nodes[j].distanceFromStartNode = adjacencyMatrix[iToSearch, j] + currentNode.distanceFromStartNode;
@@ -34,14 +33,14 @@ namespace graphsearch
                     }
 
                 }
-                open.Remove(currentNode);
+                open.Remove(currentNode);//remove the current node from checking list
                 closed.Add(currentNode);
-                if (open.Count != 0)
+                if (open.Count != 0)//evaluate the next node
                 {
                     currentNode = open[0];
                 }
             }
-            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);
+            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);//rebuild the path and return to main program for output
             return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);
         }
     }
