@@ -115,7 +115,7 @@ namespace graphsearch
                                 {
                                     chosenAlgorithm = sortingAlgorithm.AStar;
                                 }
-                                else if (pArgs[i + 1].ToUpper() == "BF" || pArgs[i + 1].ToUpper() == "BRUTEFORCE")
+                                else if (pArgs[i + 1].ToUpper() == "BF")
                                 {
                                     chosenAlgorithm = sortingAlgorithm.BF;
                                 }
