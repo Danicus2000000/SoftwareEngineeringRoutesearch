@@ -21,7 +21,7 @@ namespace graphsearch
             List<List<Node>> paths = new List<List<Node>>() { new List<Node>() { currentNode } };
             List<Node> open = new List<Node>() { currentNode };
             List<Node> closed = new List<Node>();
-            while (open.Count != 0 && currentNode != endNode)//loop until either the open list is empty or the end node is found
+            while (currentNode != endNode)//loop until either the open list is empty or the end node is found
             {
                 int iToSearch = nodes.IndexOf(open[0]);
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
@@ -31,48 +31,6 @@ namespace graphsearch
                         open.Add(nodes[j]);
                         nodes[j].distanceFromStartNode = adjacencyMatrix[iToSearch, j] + currentNode.distanceFromStartNode;
                         nodes[j].previousNode = nodes[iToSearch].name;
-                        for (int pathToClone = 0; pathToClone < paths.Count; pathToClone++)
-                        {
-                            if (paths[pathToClone][paths[pathToClone].Count - 1] == currentNode)
-                            {
-                                List<Node> clone = new List<Node>();
-                                for (int element = 0; element < paths[pathToClone].Count - 1; element++)
-                                {
-                                    clone.Add(paths[pathToClone][element]);
-                                }
-                                clone.Add(nodes[j]);
-                                paths.Add(clone);
-                                break;
-                            }
-                        }
-                        if (currentNode.isStartNode)
-                        {
-                            paths.Add(new List<Node>() { currentNode, nodes[j] });
-                        }
-                        else
-                        {
-                            bool found = false;//if a path is found add the new node on the end of it
-                            for (int pathInPaths = 0; pathInPaths < paths.Count - 1; pathInPaths++)
-                            {
-                                if (paths[pathInPaths][paths[pathInPaths].Count - 1] == currentNode)
-                                {
-                                    paths[pathInPaths].Add(nodes[j]);
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found)//if no path is found create a clone of the previous path FIX
-                            {
-                                List<Node> pathClone = new List<Node>();
-                                foreach (Node node in paths[paths.Count - 1])
-                                {
-                                    pathClone.Add(node);
-                                }
-                                paths.Add(pathClone);
-                                paths[paths.Count - 1].Remove(paths[paths.Count - 1][paths[paths.Count - 1].Count - 1]);
-                                paths[paths.Count - 1].Add(nodes[j]);
-                            }
-                        }
                     }
 
                 }

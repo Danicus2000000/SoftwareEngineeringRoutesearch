@@ -7,9 +7,9 @@ namespace graphsearch
     public class Dijkstras
     {
         /*
-         * A-K E: 15 A: 17
-         * A-G E: 9  A: 11
-         * A-E E: 13 A: 6
+         * A-K Exepcted: 15 Actual: 17
+         * A-G Expected: 9  Actual: 11
+         * A-E Expected: 6 Actual: 13
          */
         /// <summary>
         /// Runs Dijkstras on a list of nodes
