@@ -6,11 +6,6 @@ namespace graphsearch
 {
     public class Dijkstras
     {
-        /*
-         * A-K Exepcted: 15 Actual: 17
-         * A-G Expected: 9  Actual: 11
-         * A-E Expected: 6 Actual: 13
-         */
         /// <summary>
         /// Runs Dijkstras on a list of nodes
         /// </summary>
@@ -24,34 +19,33 @@ namespace graphsearch
             GetInformation infoParse = new GetInformation();
             List<Node> openNodes = new List<Node>();
             List<Node> closedNodes = new List<Node>();//creates list to store completed nodes
-            openNodes.Add(startNode);//adds start node to the open nodes pile
-            Node currentNode = startNode;//sets current node to start node
-            do //while we are not at the destination
+            nodes[nodes.IndexOf(startNode)].totalDistance = 0;//sets the distance of the start node to zero so it will be picked 
+            foreach (Node node in nodes)//populates the unvisited node list
             {
-                int AdjacentRowToSearch = nodes.IndexOf(currentNode);
+                openNodes.Add(node);
+            }
+            while (openNodes.Count != 0)//While unvisited nodes remain
+            {
+                Node currentNode = infoParse.getCheapestNode(openNodes);//Takes an unvisited noed with the smallest distance 
+                nodes[nodes.IndexOf(currentNode)].totalDistance = currentNode.totalDistance;
+                int AdjacentRowToSearch = nodes.IndexOf(currentNode);//gets the index for the adjecent row
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
                 {
-                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0 && !openNodes.Contains(nodes[j]) && !closedNodes.Contains(nodes[j])) //if a matrix value has a weight and has not been cheked and is adjacent to current node
+                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0 && !closedNodes.Contains(nodes[j]))//checks if there is a weights and if the node has not been visited
                     {
-                        nodes[j].distanceFromStartNode = adjacencyMatrix[AdjacentRowToSearch, j] + nodes[AdjacentRowToSearch].distanceFromStartNode;//increase distance from start node on specified node
-                        if (nodes[j].distanceFromStartNode < nodes[j].totalDistance) //if the new total is a cheaper route
+                        double cost = adjacencyMatrix[AdjacentRowToSearch, j] + currentNode.totalDistance;//calculates cost for this route
+                        if (cost < nodes[j].totalDistance) //if the new total is a cheaper route
                         {
-                            nodes[j].totalDistance = (double)nodes[j].distanceFromStartNode;//update the route cost and previous path to this node
+                            nodes[j].totalDistance = cost;//update the route cost and previous path to this node
                             nodes[j].previousNode = currentNode.name;
                         }
-                        openNodes.Add(nodes[j]);
-                        //add to open nodes
                     }
                 }
-                currentNode.visited = true;
-                //once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
+                closedNodes.Add(currentNode);//removes the node from visited nodes and adds it to the closed node list
                 openNodes.Remove(currentNode);
-                closedNodes.Add(currentNode);
-                currentNode = infoParse.getCheapestNode(openNodes);
-                openNodes.Remove(currentNode);
-            } while (currentNode != endNode);
-            List<string> pathToAdd=infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);
-            return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);
+            }
+            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);//converts the node list to a list contraining the true path
+            return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);//builds the path into the required string format
         }
     }
 }

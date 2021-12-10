@@ -13,7 +13,7 @@ namespace graphsearch
             AStar,
             BF
         }
-        public enum FileParseMode 
+        public enum FileParseMode
         {
             Null,
             Nodes,
@@ -96,14 +96,14 @@ namespace graphsearch
                                 }
                                 break;
                             case "-d":
-                                if (debugInfo) 
+                                if (debugInfo)
                                 {
                                     throw new InvalidOperationException("You cannot call the -d flag more than once!");
                                 }
                                 debugInfo = true;//if -d flag enable debug info
                                 break;
                             case "-a"://if a flag find sorting algorithm or if inocorrect entered throw an exception
-                                if(chosenAlgorithm != sortingAlgorithm.Null) 
+                                if (chosenAlgorithm != sortingAlgorithm.Null)
                                 {
                                     throw new InvalidOperationException("-a flag cannot be used more than once!");
                                 }
@@ -119,7 +119,7 @@ namespace graphsearch
                                 {
                                     chosenAlgorithm = sortingAlgorithm.BF;
                                 }
-                                else 
+                                else
                                 {
                                     throw new InvalidOperationException("An invalid sort option was entered!");
                                 }
@@ -137,7 +137,7 @@ namespace graphsearch
                                     Console.WriteLine("-h: Shows the help dialog");
                                     helpAlreadyShown = true;
                                 }
-                                else 
+                                else
                                 {
                                     throw new InvalidOperationException("You cannot use the -h flag more than once");
                                 }
@@ -165,15 +165,15 @@ namespace graphsearch
         /// <param name="chosenSort">The chosen sorting method</param>
         /// <param name="failureMessage">A failure message to be outputted if there is one</param>
         /// <returns>A bool representing whether the program can begin</returns>
-        public bool CanRun(bool failedBuild,string startNode,string endNode,string fileToRead, sortingAlgorithm chosenSort) 
+        public bool CanRun(bool failedBuild, string startNode, string endNode, string fileToRead, sortingAlgorithm chosenSort)
         {
-            if (!failedBuild && startNode != null && endNode != null && fileToRead != null && chosenSort!=sortingAlgorithm.Null) //if the build succeeds check file location given is valid
+            if (!failedBuild && startNode != null && endNode != null && fileToRead != null && chosenSort != sortingAlgorithm.Null) //if the build succeeds check file location given is valid
             {
-                if (File.Exists(fileToRead)) 
+                if (File.Exists(fileToRead))
                 {
                     return true;
                 }
-                else 
+                else
                 {
                     Console.WriteLine("The requested file does not exist!");
                     return false;
@@ -193,19 +193,21 @@ namespace graphsearch
         /// <param name="adjacencyMatrix">Stores the relation of all nodes in form adjacencymatrix[NodeFrom][NodeTo]=weight</param>
         /// <param name="failureMessage">Stores a failure message if there is one</param>
         /// <returns>A bool representing whether the file is formatted correctly</returns>
-        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix) 
+        public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix)
         {
             FileParseMode fileMode = FileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
             adjacencyMatrix = null;
+            bool createOffset = true;//uses offset to stop adjacency matrix from breaking with non zero based index files
+            int offset = 0;
             try
             {
                 foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
-                    for(int i=0; i<lineInfo.Length;i++) //removes any whitespace that could be in the file acccidentally
+                    for (int i = 0; i < lineInfo.Length; i++) //removes any whitespace that could be in the file acccidentally
                     {
-                        lineInfo[i].Replace(" ","");
+                        lineInfo[i].Replace(" ", "");
                     }
                     if (lineInfo[0].ToLower() == "nodes")//if the word nodes is seen change the next lines to parse into nodes
                     {
@@ -217,28 +219,33 @@ namespace graphsearch
                     }
                     else//if the line is information
                     {
+                        if (createOffset) //creates offset to allow adjacency matrix to work even with non 0 based index files as long as the index only increments by 1
+                        {
+                            createOffset = false;
+                            offset = Convert.ToInt32(lineInfo[0]);
+                        }
                         if (fileMode == FileParseMode.Nodes) //if we are currently parsing for nodes
                         {
-                            nodes.Add(new Node(lineInfo[1].Replace("\"",""),Convert.ToInt32(lineInfo[0]),Convert.ToDouble(lineInfo[2]),Convert.ToDouble(lineInfo[3])));//Adds a new node with the details given in the file    
+                            nodes.Add(new Node(lineInfo[1].Replace("\"", ""), Convert.ToInt32(lineInfo[0])-offset, Convert.ToDouble(lineInfo[2]), Convert.ToDouble(lineInfo[3])));//Adds a new node with the details given in the file    
                         }
                         else if (fileMode == FileParseMode.Edges) //if we are currently parsing for edges
                         {
                             bool foundNode1 = false;//stores if each node has been found
                             bool foundNode2 = false;
-                            if (adjacencyMatrix == null) 
+                            if (adjacencyMatrix == null)
                             {
                                 adjacencyMatrix = new int[nodes.Count, nodes.Count];
                             }
                             foreach (Node node in nodes)//loop through all nodes and add the mentioned edge the first number is the node that you can traverse to the second is the cost to traverse this path
                             {
-                                if (node.nodeIndex == Convert.ToInt32(lineInfo[0]))
+                                if (node.nodeIndex == Convert.ToInt32(lineInfo[0])-offset)
                                 {
-                                    adjacencyMatrix[Convert.ToInt32(lineInfo[0])-1,Convert.ToInt32(lineInfo[1])-1]=Convert.ToInt32(lineInfo[2]);
+                                    adjacencyMatrix[Convert.ToInt32(lineInfo[0]) - offset, Convert.ToInt32(lineInfo[1]) - offset] = Convert.ToInt32(lineInfo[2]);
                                     foundNode1 = true;
                                 }
-                                else if (node.nodeIndex == Convert.ToInt32(lineInfo[1]))
+                                else if (node.nodeIndex == Convert.ToInt32(lineInfo[1])-offset)
                                 {
-                                    adjacencyMatrix[Convert.ToInt32(lineInfo[1])-1, Convert.ToInt32(lineInfo[0])-1] = Convert.ToInt32(lineInfo[2]);
+                                    adjacencyMatrix[Convert.ToInt32(lineInfo[1]) - offset, Convert.ToInt32(lineInfo[0]) - offset] = Convert.ToInt32(lineInfo[2]);
                                     foundNode2 = true;
                                 }
                                 if (foundNode1 && foundNode2)
@@ -250,13 +257,13 @@ namespace graphsearch
                     }
                 }
                 return true;
-            }
+        }
             catch (Exception) //tells prorgam the operation failed
             {
                 Console.WriteLine("The data in the file given was not formatted correctly!");
                 return false;
             }
-        }
+}
 
         /// <summary>
         /// Assigns the start and end node bools in the list
@@ -268,37 +275,37 @@ namespace graphsearch
         /// <param name="trueEndNode">A refrence to the end node in the list of nodes</param>
         /// <param name="failureMessage">Outputs failure message if there is one</param>
         /// <returns>A bool representing whether the start and end node strings occur in the file</returns>
-        public bool SetStartNodeAndEndNode(string startNode,string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode)
+        public bool SetStartNodeAndEndNode(string startNode, string endNode, List<Node> nodes, out Node trueStartNode, out Node trueEndNode)
         {
             bool foundStart = false;//used to ensure we do not have to loop through all nodes every time to save time
             bool foundEnd = false;
             trueStartNode = null;
             trueEndNode = null;
-            foreach(Node node in nodes) //sets start and end node upon finding them
+            foreach (Node node in nodes) //sets start and end node upon finding them
             {
-                if (startNode == node.name) 
+                if (startNode == node.name)
                 {
                     node.isStartNode = true;
                     trueStartNode = node;
                     foundStart = true;
                 }
-                else if(endNode == node.name) 
+                else if (endNode == node.name)
                 {
                     node.isEndNode = true;
                     trueEndNode = node;
                     foundEnd = true;
                 }
-                if(foundStart && foundEnd) 
+                if (foundStart && foundEnd)
                 {
                     break;
                 }
             }
-            if(!foundStart || !foundEnd) //ensures that the start node and end node given are in the file by returning false if they are not found
+            if (!foundStart || !foundEnd) //ensures that the start node and end node given are in the file by returning false if they are not found
             {
                 Console.WriteLine("The start node or end node does not match any given in the file!");
                 return false;
             }
-            else 
+            else
             {
                 return true;
             }
@@ -340,7 +347,7 @@ namespace graphsearch
         /// <param name="adjacencyMatrix">The relation between all nodes</param>
         /// <param name="totalCost">The cost of traversing the shortest path</param>
         /// <returns></returns>
-        public List<string> getTakenPath(List<Node> nodes,Node startNode, Node endNode,int[,] adjacencyMatrix, out int totalCost) 
+        public List<string> getTakenPath(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix, out int totalCost)
         {
             Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
             totalCost = 0;
@@ -353,7 +360,7 @@ namespace graphsearch
                     if (node.name == current.previousNode)
                     {
                         pathToAdd.Add(node.name);
-                        totalCost += adjacencyMatrix[node.nodeIndex - 1, current.nodeIndex - 1];
+                        totalCost += adjacencyMatrix[node.nodeIndex, current.nodeIndex];
                         current = node;
                         break;
                     }
@@ -368,10 +375,10 @@ namespace graphsearch
         /// </summary>
         /// <param name="nodesToCheck">The nodes list to find the lowest value in</param>
         /// <returns></returns>
-        public Node getCheapestNode(List<Node> nodesToCheck) 
+        public Node getCheapestNode(List<Node> nodesToCheck)
         {
             Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
-            double cheapestNodeValue = 999999999;
+            double cheapestNodeValue = double.PositiveInfinity;
             foreach (Node node in nodesToCheck)
             {
                 if (node.totalDistance < cheapestNodeValue)
