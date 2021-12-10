@@ -26,7 +26,7 @@ namespace graphsearch
             }
             while (openNodes.Count != 0)//While unvisited nodes remain
             {
-                Node currentNode = infoParse.getCheapestNode(openNodes);//Takes an unvisited noed with the smallest distance 
+                Node currentNode = infoParse.GetCheapestNode(openNodes);//Takes an unvisited noed with the smallest distance 
                 nodes[nodes.IndexOf(currentNode)].totalDistance = currentNode.totalDistance;
                 int AdjacentRowToSearch = nodes.IndexOf(currentNode);//gets the index for the adjecent row
                 for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
@@ -44,7 +44,7 @@ namespace graphsearch
                 closedNodes.Add(currentNode);//removes the node from visited nodes and adds it to the closed node list
                 openNodes.Remove(currentNode);
             }
-            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);//converts the node list to a list contraining the true path
+            List<string> pathToAdd = infoParse.GetTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);//converts the node list to a list contraining the true path
             return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);//builds the path into the required string format
         }
     }

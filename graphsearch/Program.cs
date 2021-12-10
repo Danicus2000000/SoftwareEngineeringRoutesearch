@@ -6,7 +6,10 @@ namespace graphsearch
     class Program
     {
         /*Notes: 
-         * The GetInfromation.Grab method will fail if muliple of the same flag type are used i.e. -s "A" -s "D" and an error message will be outputted to the user specifying the flag causing the failure 
+         * The GetInfromation.Grab method will fail if muliple of the same flag type are used i.e. -s "A" -s "D" and an error message will be outputted to the user specifying the flag causing the failure
+         * Naming Convention:
+         * Any variable uses camel case
+         * Any function uses pascal case
          */
         static void Main(string[] args)
         {

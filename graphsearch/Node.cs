@@ -16,7 +16,6 @@ namespace graphsearch
         public double heuristicDistance = 0;//distance from end node ignoring all obsticals
         public string previousNode=null;//previous node used to traverse to this point
         public double totalDistance = double.PositiveInfinity;//calculates total distance including from start and heuristic
-        public bool visited = false;//if the node has been visited
 
         /// <summary>
         /// Intialiser for a Node
@@ -29,7 +28,6 @@ namespace graphsearch
         {
             name = pName;
             nodeIndex = pNodeIndex;
-            visited = false;
             xCoord = pXCoord;
             yCoord = pYCoord;
             isEndNode = false;

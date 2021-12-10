@@ -13,7 +13,7 @@ namespace graphsearch
             AStar,
             BF
         }
-        public enum FileParseMode
+        public enum fileParseMode
         {
             Null,
             Nodes,
@@ -195,7 +195,7 @@ namespace graphsearch
         /// <returns>A bool representing whether the file is formatted correctly</returns>
         public bool ParseFile(string fileToRead, out List<Node> nodes, out int[,] adjacencyMatrix)
         {
-            FileParseMode fileMode = FileParseMode.Null;
+            fileParseMode fileMode = fileParseMode.Null;
             nodes = new List<Node>();//contains all the nodes in the diagram
             adjacencyMatrix = null;
             bool createOffset = true;//uses offset to stop adjacency matrix from breaking with non zero based index files
@@ -211,11 +211,11 @@ namespace graphsearch
                     }
                     if (lineInfo[0].ToLower() == "nodes")//if the word nodes is seen change the next lines to parse into nodes
                     {
-                        fileMode = FileParseMode.Nodes;
+                        fileMode = fileParseMode.Nodes;
                     }
                     else if (lineInfo[0].ToLower() == "edges")//if the word edges is seen change the next lines to parse into edges
                     {
-                        fileMode = FileParseMode.Edges;
+                        fileMode = fileParseMode.Edges;
                     }
                     else//if the line is information
                     {
@@ -224,11 +224,11 @@ namespace graphsearch
                             createOffset = false;
                             offset = Convert.ToInt32(lineInfo[0]);
                         }
-                        if (fileMode == FileParseMode.Nodes) //if we are currently parsing for nodes
+                        if (fileMode == fileParseMode.Nodes) //if we are currently parsing for nodes
                         {
                             nodes.Add(new Node(lineInfo[1].Replace("\"", ""), Convert.ToInt32(lineInfo[0])-offset, Convert.ToDouble(lineInfo[2]), Convert.ToDouble(lineInfo[3])));//Adds a new node with the details given in the file    
                         }
-                        else if (fileMode == FileParseMode.Edges) //if we are currently parsing for edges
+                        else if (fileMode == fileParseMode.Edges) //if we are currently parsing for edges
                         {
                             bool foundNode1 = false;//stores if each node has been found
                             bool foundNode2 = false;
@@ -347,12 +347,11 @@ namespace graphsearch
         /// <param name="adjacencyMatrix">The relation between all nodes</param>
         /// <param name="totalCost">The cost of traversing the shortest path</param>
         /// <returns></returns>
-        public List<string> getTakenPath(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix, out int totalCost)
+        public List<string> GetTakenPath(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix, out int totalCost)
         {
             Node current = endNode;//we then work our way backwards through the tree to find the path the algorithm took along with the cost of this path
             totalCost = 0;
-            List<string> pathToAdd = new List<string>();
-            pathToAdd.Add(endNode.name);
+            List<string> pathToAdd = new List<string> { endNode.name };
             do
             {
                 foreach (Node node in nodes)
@@ -375,7 +374,7 @@ namespace graphsearch
         /// </summary>
         /// <param name="nodesToCheck">The nodes list to find the lowest value in</param>
         /// <returns></returns>
-        public Node getCheapestNode(List<Node> nodesToCheck)
+        public Node GetCheapestNode(List<Node> nodesToCheck)
         {
             Node cheapestNode = null;//once all adjacent nodes for current have been checked we remove the cheapest node and make it the current node
             double cheapestNodeValue = double.PositiveInfinity;

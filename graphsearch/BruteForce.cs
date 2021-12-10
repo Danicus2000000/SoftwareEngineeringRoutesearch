@@ -17,31 +17,33 @@ namespace graphsearch
         public string Run(List<Node> nodes, Node startNode, Node endNode, int[,] adjacencyMatrix)
         {
             GetInformation infoParse = new GetInformation();
-            Node currentNode = startNode;
-            List<Node> open = new List<Node>() { currentNode };//tracks nodes that have been searched and nodes currently being search
-            List<Node> closed = new List<Node>();
-            while (currentNode != endNode)//loop until either the open list is empty or the end node is found
+            List<Node> openNodes = new List<Node>();
+            nodes[nodes.IndexOf(startNode)].totalDistance = 0;//sets the distance of the start node to zero so it will be picked 
+            foreach (Node node in nodes)//populates the unvisited node list
             {
-                int iToSearch = nodes.IndexOf(open[0]);//sets index to first open node
-                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)//loops through all nodes finding the connections and if it is the shortest we add it
-                {
-                    if (adjacencyMatrix[iToSearch, j] != 0 && !open.Contains(nodes[j]) && !closed.Contains(nodes[j]))//if the node has not yet been checked
-                    {
-                        open.Add(nodes[j]);
-                        nodes[j].distanceFromStartNode = adjacencyMatrix[iToSearch, j] + currentNode.distanceFromStartNode;
-                        nodes[j].previousNode = nodes[iToSearch].name;
-                    }
-
-                }
-                open.Remove(currentNode);//remove the current node from checking list
-                closed.Add(currentNode);
-                if (open.Count != 0)//evaluate the next node
-                {
-                    currentNode = open[0];
-                }
+                openNodes.Add(node);
             }
-            List<string> pathToAdd = infoParse.getTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);//rebuild the path and return to main program for output
-            return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);
+            while (openNodes.Count != 0)//While unvisited nodes remain
+            {
+                Node currentNode = infoParse.GetCheapestNode(openNodes);//Takes an unvisited noed with the smallest distance 
+                nodes[nodes.IndexOf(currentNode)].totalDistance = currentNode.totalDistance;
+                int AdjacentRowToSearch = nodes.IndexOf(currentNode);//gets the index for the adjecent row
+                for (int j = 0; j < adjacencyMatrix.GetLength(1); j++)
+                {
+                    if (adjacencyMatrix[AdjacentRowToSearch, j] != 0)//checks if there is a weights and if the node has not been visited
+                    {
+                        double cost = adjacencyMatrix[AdjacentRowToSearch, j] + currentNode.totalDistance;//calculates cost for this route
+                        if (cost < nodes[j].totalDistance) //if the new total is a cheaper route
+                        {
+                            nodes[j].totalDistance = cost;//update the route cost and previous path to this node
+                            nodes[j].previousNode = currentNode.name;
+                        }
+                    }
+                }
+                openNodes.Remove(currentNode);//removes the node from visited nodes
+            }
+            List<string> pathToAdd = infoParse.GetTakenPath(nodes, startNode, endNode, adjacencyMatrix, out int totalCost);//converts the node list to a list contraining the true path
+            return infoParse.BuildPathFromStartToEnd(pathToAdd, totalCost);//builds the path into the required string format
         }
     }
 }
