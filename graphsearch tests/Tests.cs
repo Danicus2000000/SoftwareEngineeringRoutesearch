@@ -159,7 +159,7 @@ namespace graphsearch_tests
         public void multipleUseOfHFlag()//tests that multiple uses of the -h flag is handled
         {
             string[] args = { "-s", "A", "-e", "L", "-f", "test_data_01.txt", "-a", "ASTAR", "-h", "-h" };
-            string expected = "You cannot call the -h flag more than once";
+            string expected = "-s <number or string>: Specify starting node, either as an integer or a string.  If a string, it must be in quotes, such as \"A\" or \"Norwich\".-e <number or string>: Specify end node either as an integer or a string.  If a string, it must be in quotes, such as \"Z\" or \"Zetland\".-a BF|DIJKSTRA|ASTAR: Use the relevant algorithm (brute force, Dijkstra's or A*)-f <filename>: read data from <filename> as the input-o <filename>: Write the output to file <filename> only-O <filename>: Write the output to both the console and file <filename>-d: Output debugging information to the console.-h: Shows the help dialogYou cannot use the -h flag more than once";
             string actual = doRun(args);
             Assert.AreEqual(expected, actual);
         }
