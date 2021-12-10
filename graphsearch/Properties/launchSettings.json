@@ -2,7 +2,7 @@
   "profiles": {
     "graphsearch": {
       "commandName": "Project",
-      "commandLineArgs": "-s \"1-22\" -e \"111-104\" -a  BF -f \"test_data_04.txt\""
+      "commandLineArgs": "-s \"119-2\" -e \"164-127\" -a  Dijkstra -f \"test_data_04.txt\""
     }
   }
 }

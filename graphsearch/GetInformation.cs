@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 namespace graphsearch
 {
     public class GetInformation
@@ -202,7 +203,7 @@ namespace graphsearch
             int offset = 0;
             try
             {
-                foreach (string line in File.ReadAllLines(fileToRead))//foreach line of info in the file
+                foreach (string line in File.ReadAllLines(fileToRead).Where(x=>x!="" && x!=null).ToArray())//foreach line of info in the file disincluding blank lines
                 {
                     string[] lineInfo = line.Split(",");//split it by commas as required
                     for (int i = 0; i < lineInfo.Length; i++) //removes any whitespace that could be in the file acccidentally
@@ -285,13 +286,11 @@ namespace graphsearch
             {
                 if (startNode == node.name)
                 {
-                    node.isStartNode = true;
                     trueStartNode = node;
                     foundStart = true;
                 }
                 else if (endNode == node.name)
                 {
-                    node.isEndNode = true;
                     trueEndNode = node;
                     foundEnd = true;
                 }
