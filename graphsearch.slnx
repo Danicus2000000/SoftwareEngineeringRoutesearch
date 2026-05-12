@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="graphsearch tests/graphsearch tests.csproj" />
+  <Project Path="graphsearch/graphsearch.csproj" />
+</Solution>
